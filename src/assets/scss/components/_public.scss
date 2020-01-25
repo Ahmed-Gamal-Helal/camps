@@ -1,0 +1,116 @@
+.hover-pointer {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+// copied ---------------------------------------------
+.close_icon {
+  text-align: center;
+  font-size: 10px;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+
+  background: $color-accent;
+  color: #fff !important;
+  //   font-size: 18px !important;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  transition: all 0.2s ease;
+  transform: translateY(15px);
+
+  visibility: hidden;
+}
+
+.img_pointer,
+.video_pointer {
+  position: relative;
+}
+.img_pointer:hover .close_icon {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.video_pointer:hover .close_icon {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+// copied ---------------------------------------------
+
+.toggle-adjust {
+  .v-input__control {
+    margin: auto;
+    .v-input--selection-controls__input {
+      margin: 0;
+    }
+  }
+}
+
+.v-input {
+  &--switch {
+    margin-top: 0;
+    .v-input {
+      &__control {
+        margin: auto;
+      }
+    }
+  }
+}
+
+.fadeIn-enter-active,
+.fadeIn-leave-active {
+  transition: opacity 0.5s;
+}
+.fadeIn-enter,
+.fadeIn-leave-to {
+  opacity: 0;
+}
+
+.input_wrpper {
+  position: relative;
+}
+//   .input_wrpper .btn {
+//     position: absolute;
+//     right: 0;
+//     top:0;
+//   }
+.color {
+  &-label {
+    font-size: 20px;
+  }
+  &-button {
+    margin: 0 1rem;
+  }
+}
+
+.read-more {
+  p {
+    display: inline-block;
+    margin: 0;
+  }
+  span {
+    margin: 0 0.2rem;
+  }
+}
+
+.color-chip {
+  width: 2rem;
+}
+
+.editor {
+  border: 1px solid transparent;
+  &__errors {
+    color: rgb(197, 89, 0);
+    text-transform: capitalize;
+  }
+}
+
+.text-editor{
+    &__label{
+        color: #444;
+        font-weight: bold;
+    }
+}

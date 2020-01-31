@@ -24,16 +24,25 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: "/camps",
+    component: Layout,
+    redirect: "/camps",
+    children: [
+      {
+        path: "/camps",
+        component: () => import("@/views/camps"),
+        name: "Camps",
+        meta: {
+          icon: "mdi-view-dashboard",
+          title: "camps"
+        }
+      }
+    ]
+  },
+  {
     path: "/login",
     component: () => import("@/views/login/index"),
     hidden: true
-    //     beforeEnter: (to, from, next) => {
-    //       if (cookie.get("token")) {
-    //         next("/");
-    //       } else {
-    //         next();
-    //       }
-    //     }
   },
   {
     path: "/401",

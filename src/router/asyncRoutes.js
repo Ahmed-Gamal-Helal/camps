@@ -14,7 +14,6 @@ export const asyncRouterMap = [
         component: () => import("@/views/camps/index"),
         name: "campsList",
         // hidden: true,
-
         meta: {
           title: "camps",
           icon: "mdi-account-circle"

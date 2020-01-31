@@ -14,12 +14,13 @@
           :base-path="route.path"
         ></sidebar-item>
       </v-list>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>-->
 
-    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app dark>
+    <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app light>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-        <span class="hidden-sm-and-down">{{ $t("heading.wsadmin") }}</span>
-        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-img :src="require('@/assets/imgs/logo.png')" fluid width="120px"></v-img>
+        <!-- <span>{{ $t("heading.wsadmin") }}</span> -->
+        <!--class="hidden-sm-and-down" <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
       </v-toolbar-title>
       <!-- <v-text-field
         flat
@@ -28,14 +29,14 @@
         prepend-inner-icon="mdi-search"
         label="Search"
         class="hidden-sm-and-down"
-      ></v-text-field> -->
+      ></v-text-field>-->
       <div class="flex-grow-1"></div>
       <!-- <v-btn icon>
         <v-icon>mdi-apps</v-icon>
-      </v-btn> -->
+      </v-btn>-->
       <!-- <v-btn icon title="language">
         <v-icon @click="handleChangeLanguage">mdi-earth</v-icon>
-      </v-btn> -->
+      </v-btn>-->
       <v-btn icon large @click="logout" title="logout">
         <v-icon>mdi-logout</v-icon>
       </v-btn>

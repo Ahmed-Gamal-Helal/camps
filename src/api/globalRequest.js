@@ -4,7 +4,7 @@ import cookies from "js-cookie";
 
 export function index(reqName, query = {}, locale) {
   return request({
-    url: `api/admin/${reqName}`,
+    url: `${reqName}`,
     headers: { "X-locale": locale ? locale : cookies.get("language") },
     method: "get",
     params: {
@@ -15,7 +15,7 @@ export function index(reqName, query = {}, locale) {
 
 export function showData(reqName, slug, locale = "en") {
   return request({
-    url: `api/admin/${reqName}/${slug}`,
+    url: `${reqName}/${slug}`,
     headers: { "X-locale": locale },
     method: "get"
   });
@@ -23,14 +23,14 @@ export function showData(reqName, slug, locale = "en") {
 
 export function storeData(reqName, data) {
   return request({
-    url: `api/admin/${reqName}`,
+    url: `${reqName}`,
     method: "post",
     data
   });
 }
 export const updateData = (reqName, data, id, locale = "en") => {
   return request({
-    url: `api/admin/${reqName}/${id}`,
+    url: `${reqName}/${id}`,
     method: "post",
     headers: { "X-locale": locale ? locale : cookies.get("language") },
     data
@@ -38,13 +38,13 @@ export const updateData = (reqName, data, id, locale = "en") => {
 };
 export function deleteData(reqName, id) {
   return request({
-    url: `api/admin/${reqName}/${id}`,
+    url: `${reqName}/${id}`,
     method: "delete"
   });
 }
 export function mediaUpdate(id, data) {
   return request({
-    url: `api/admin/media/${id}`,
+    url: `media/${id}`,
     method: "post",
     data
   });

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Camps</h1>
+    <router-link to="/camps">camps</router-link>
   </div>
 </template>
 

@@ -7,6 +7,8 @@ import i18n from "./lang"; // Internationalization
 import "./permission";
 import "./bootstrap";
 import "./assets/scss/main.scss";
+import "./assets/fonts/Poppins/stylesheet.css";
+
 import Cookies from "js-cookie";
 
 Vue.config.productionTip = false;

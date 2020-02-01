@@ -1,25 +1,78 @@
 <template>
   <main>
     <!-- <v-data-table :headers="headers" :items="camps" hide-default-footer></v-data-table> -->
-    <v-data-table
-      :headers="headers"
-      :items="camps"
-      :mobile-breakpoint="zero"
-      hide-default-footer
-      class="table"
-    >
-      <template v-slot:item="camp">
-        <tr class="table__row">
-          <td class="table__cell text-left">{{ camp.item.name }}</td>
-          <td class="table__cell text-left">{{ camp.item.type_name }}</td>
-          <td class="table__cell text-left">{{ camp.item.location.location }}</td>
-          <td class="table__cell text-left">{{ camp.item.start_date.date }}</td>
-          <td class="table__cell text-left">{{ camp.item.end_date.date }}</td>
-          <td class="table__cell text-left">{{ camp.item.online_payment }}</td>
-          <!-- <td class="table__cell">{{ camp.item.start_date.date }}</td> -->
-        </tr>
-      </template>
-    </v-data-table>
+    <v-container>
+      <global-toolbar
+        title="camps"
+        actionButtonText="add_camp"
+        :actionButton="true"
+      />
+      <v-data-table
+        :headers="headers"
+        :items="camps"
+        :mobile-breakpoint="zero"
+        hide-default-footer
+        class="table"
+      >
+        <template v-slot:item="camp">
+          <tr class="table__row">
+            <td class="table__cell text-center">
+              <v-icon v-if="camp.item.available" class="gold-icon">
+                mdi-star
+              </v-icon>
+              <v-icon v-else>mdi-star-outline</v-icon>
+            </td>
+            <td class="table__cell text-left name">{{ camp.item.name }}</td>
+            <td class="table__cell text-left">{{ camp.item.type_name }}</td>
+            <td class="table__cell text-left">
+              {{ camp.item.location.location }}
+            </td>
+            <td class="table__cell text-left">
+              {{ camp.item.start_date.date | moment("dddd, MMMM Do YYYY") }}
+            </td>
+            <td class="table__cell text-left">
+              {{ camp.item.end_date.date | moment("dddd, MMMM Do YYYY") }}
+            </td>
+            <td class="table__cell text-left">
+              <v-chip
+                v-if="!camp.item.online_payment"
+                small
+                color="#faddd2"
+                text-color="#ec531e"
+              >
+                <v-avatar left>
+                  <v-icon small>mdi-close-circle</v-icon>
+                </v-avatar>
+                Closed
+              </v-chip>
+              <!-- <v-chip v-if="!camp.item.online_payment">closed</v-chip> -->
+              <v-chip v-else small color="#dcf3d1" text-color="#82c565">
+                <v-avatar left>
+                  <v-icon small>mdi-checkbox-marked-circle</v-icon>
+                </v-avatar>
+                Open
+              </v-chip>
+              <!-- <v-chip v-else success>open</v-chip> -->
+            </td>
+            <td class="table__cell text-center">
+              <router-link :to="`/camps/${camp.item.id}/teams`">
+                <v-icon>mdi-open-in-app</v-icon>
+              </router-link>
+            </td>
+            <td class="table__cell text-center">
+              <router-link class="hovering mr-3 edit" to="/">
+                <v-icon small>mdi-pencil</v-icon><br />
+                Edit
+              </router-link>
+              <span class="hovering delete">
+                <v-icon small>mdi-delete</v-icon><br />
+                Delete
+              </span>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+    </v-container>
   </main>
 </template>
 
@@ -30,17 +83,20 @@ export default {
     return {
       zero: 0,
       headers: [
+        { text: "Shown", value: "available", align: "center", sortable: false },
         {
           text: "Name",
           align: "left",
           sortable: false,
           value: "name"
         },
-        { text: "Type", value: "type_name" },
-        { text: "Location", value: "location.location" },
-        { text: "Start Date", value: "start_date.date" },
-        { text: "End Date", value: "end_date.date" },
-        { text: "Online Payment", value: "online_payment" }
+        { text: "Type", value: "type_name", sortable: false },
+        { text: "Location", value: "location.location", sortable: false },
+        { text: "Start Date", value: "start_date.date", sortable: false },
+        { text: "End Date", value: "end_date.date", sortable: false },
+        { text: "Online Payment", value: "online_payment", sortable: false },
+        { text: "Teams", value: "", align: "center", sortable: false },
+        { text: "", value: "", width: 110, sortable: false }
       ],
       camps: []
     };

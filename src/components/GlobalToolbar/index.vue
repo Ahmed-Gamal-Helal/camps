@@ -1,12 +1,12 @@
 <template>
   <v-toolbar flat class="main-header">
     <v-toolbar-title class="main-header__title">
-      <a class="main-header__title__back-link" @click="$router.go(-1)">
+      <!-- <a class="main-header__title__back-link" @click="$router.go(-1)">
         &lt; {{ $t("button.back") }}
-      </a>
-      <h4 class="main-header__title__header">
+      </a> -->
+      <h1>
         {{ $t(`heading.${title}`) }}
-      </h4>
+      </h1>
     </v-toolbar-title>
 
     <v-spacer v-if="actionButton"></v-spacer>
@@ -16,7 +16,7 @@
         :loading="loading"
         :disabled="disabled"
         class="button btn-height--1 my-auto mx-1"
-        color="primary"
+        color="success"
         @click="fireButtonClick"
       >
         <span class="mx-2">{{ $t(`button.${actionButtonText}`) }}</span>

@@ -10,12 +10,12 @@ export const constantRouterMap = [
   {
     path: "/",
     component: Layout,
-    redirect: "/dashboard",
+    redirect: "/camps",
     children: [
       {
-        path: "/dashboard",
-        component: () => import("@/views/dashboard"),
-        name: "Dashboard",
+        path: "/camps",
+        component: () => import("@/views/camps"),
+        name: "camps",
         meta: {
           icon: "mdi-view-dashboard",
           title: "dashboard"
@@ -32,6 +32,15 @@ export const constantRouterMap = [
         path: "/camps",
         component: () => import("@/views/camps"),
         name: "Camps",
+        meta: {
+          icon: "mdi-view-dashboard",
+          title: "camps"
+        }
+      },
+      {
+        path: "/camps/:id/teams",
+        component: () => import("@/views/camps/teams"),
+        name: "CampsTeams",
         meta: {
           icon: "mdi-view-dashboard",
           title: "camps"

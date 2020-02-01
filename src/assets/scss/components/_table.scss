@@ -6,5 +6,35 @@
         padding: 0.5rem;
       }
     }
+    &__row {
+      td:last-child {
+        transition: all .3s ease-in-out;
+        .hovering {
+          display: none;
+        }
+      }
+      &:hover {
+        td:last-child {
+          .hovering {
+            display: inline-block;
+          }
+        }
+      }
+      td {
+        color: #838789;
+        font-size: 13px;
+        padding: 20px 16px;
+        .edit, i.mdi-pencil {
+          color: $primary !important;
+        }
+        .delete, i.mdi-delete {
+          color: red !important;
+        }
+      }
+      .name {
+        color: $primary;
+        font-weight: bold;
+      }
+    }
   }
 }

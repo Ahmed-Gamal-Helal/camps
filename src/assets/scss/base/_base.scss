@@ -42,3 +42,9 @@ a {
     max-height: 70vh;
     overflow: auto;
 }
+* {
+  font-family: $font-regular;
+}
+.gold-icon {
+  color: $color-gold !important;
+}

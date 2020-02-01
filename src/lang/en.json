@@ -78,7 +78,8 @@
     "close": "Close",
     "add": "Add",
     "got_it": "Got It",
-    "add_speaker": "Add Speaker"
+    "add_speaker": "Add Speaker",
+    "add_camp": "Add Camp"
   },
   "heading": {
     "members": "Members",
@@ -114,7 +115,9 @@
     "gallery_exhibition": "Gallery Exhibition",
     "books": "Books",
     "events": "Events",
-    "wsadmin": "WS Admin"
+    "wsadmin": "WS Admin",
+    "camps": "Camps",
+    "available_teams": "Available Teams"
   },
   "table": {
     "profile": "Profile",

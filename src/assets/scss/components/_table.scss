@@ -1,5 +1,5 @@
 .v-data-table {
-  padding-top: 2rem;
+  // padding-top: 2rem;
   .table {
     &-logo {
       img {
@@ -8,13 +8,14 @@
     }
     &__row {
       td:last-child {
-        transition: all .3s ease-in-out;
+        transition: all 0.3s ease-in-out;
         .hovering {
           display: none;
         }
       }
       &:hover {
         td:last-child {
+          transition: all 0.3s ease-in-out;
           .hovering {
             display: inline-block;
           }
@@ -24,10 +25,13 @@
         color: #838789;
         font-size: 13px;
         padding: 20px 16px;
-        .edit, i.mdi-pencil {
+        height: 79px;
+        .edit,
+        i.mdi-pencil {
           color: $primary !important;
         }
-        .delete, i.mdi-delete {
+        .delete,
+        i.mdi-delete {
           color: red !important;
         }
       }
@@ -37,4 +41,25 @@
       }
     }
   }
+}
+.teams {
+  td {
+    color: $color-dark !important;
+    font-weight: bolder !important;
+  }
+}
+.members {
+  tbody {
+    tr:nth-child(odd) {
+      background-color: #e5f3f9;
+    }
+    tr {
+      td {
+        border-bottom: none !important;
+      }
+    }
+  }
+}
+.v-expansion-panel::before {
+  box-shadow: none !important;
 }

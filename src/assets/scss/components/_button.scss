@@ -5,13 +5,16 @@
 .button {
     line-height: normal;
     padding: 0 0.5rem;
-    border-radius: 4px;
+    border-radius: 20px;
     color: $color-white !important;
     height: 56px;
-    font: 1rem $font-bold;
+    font-size: .8rem;
     text-transform: capitalize;
     min-width: unset !important;
     text-indent: unset !important;
+    i {
+      color: white !important;
+    }
     &--lg {
       max-height: $h-form-input !important;
       height: 56px !important;

@@ -76,7 +76,7 @@
           >
           <v-expansion-panel-content>
             <v-data-table
-              :headers="headers"
+              :headers="reserved_headers"
               :items="reserved_teams"
               :mobile-breakpoint="zero"
               class="table teams"
@@ -102,25 +102,6 @@
                   </td>
                   <td class="table__cell text-center">
                     {{ team.item.remaining_spots + ` Spots` }}
-                  </td>
-                  <td class="table__cell text-center">
-                    <v-chip
-                      v-if="!team.item.is_enabled"
-                      small
-                      color="#faddd2"
-                      text-color="#ec531e"
-                    >
-                      <v-avatar left>
-                        <v-icon small>mdi-close-circle</v-icon>
-                      </v-avatar>
-                      Inactive
-                    </v-chip>
-                    <v-chip v-else small color="#dcf3d1" text-color="#82c565">
-                      <v-avatar left>
-                        <v-icon small>mdi-checkbox-marked-circle</v-icon>
-                      </v-avatar>
-                      Active
-                    </v-chip>
                   </td>
                   <td class="table__cell pa-0 text-center">
                     <v-btn
@@ -206,6 +187,29 @@ export default {
           align: "center"
         },
         { text: "Enabled", value: "enabled", sortable: false, align: "center" },
+        { text: "", value: "", width: 150, sortable: false, align: "center" }
+      ],
+      reserved_headers: [
+        {
+          text: "Classification",
+          align: "center",
+          sortable: false,
+          value: "clasification.name"
+        },
+        {
+          text: "Team Name",
+          align: "center",
+          sortable: false,
+          value: "name"
+        },
+        { text: "Age Group", value: "", sortable: false, align: "center" },
+        { text: "Gender", value: "gender", sortable: false, align: "center" },
+        {
+          text: "Remaining Spots",
+          value: "remaining_spots",
+          sortable: false,
+          align: "center"
+        },
         { text: "", value: "", width: 150, sortable: false, align: "center" }
       ],
       // teams: [{ available_teams: [], reserved_teams: [] }],

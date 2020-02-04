@@ -6,6 +6,9 @@ import vuetify from "./plugins/vuetify";
 import i18n from "./lang"; // Internationalization
 import "./permission";
 import "./bootstrap";
+import VueNumberInput from "@chenfengyuan/vue-number-input";
+
+Vue.use(VueNumberInput);
 import "./assets/scss/main.scss";
 import "./assets/fonts/Poppins/stylesheet.css";
 

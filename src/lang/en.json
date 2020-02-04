@@ -29,7 +29,10 @@
     "address": "Address",
     "speakers": "Speakers",
     "url": "URL",
-    "date": "Event Date"
+    "date": "Event Date",
+    "classification_id": "Classification",
+    "group_id": "Group",
+    "gender": "Gender"
   },
   "validation": {
     "required": "%{attribute} is required",

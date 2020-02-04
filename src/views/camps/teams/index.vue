@@ -2,10 +2,15 @@
   <main>
     <!-- <v-data-table :headers="headers" :items="camps" hide-default-footer></v-data-table> -->
     <v-container>
+      <!-- Add / Edit Teams -->
+      <section>
+        <h1>Teams</h1>
+        <Form />
+      </section>
       <v-expansion-panels v-model="panel" multiple>
         <v-expansion-panel>
           <v-expansion-panel-header
-            ><h1>Available Teams</h1></v-expansion-panel-header
+            ><h2>Available Teams</h2></v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <v-data-table
@@ -72,7 +77,7 @@
         </v-expansion-panel>
         <v-expansion-panel class="mt-4">
           <v-expansion-panel-header
-            ><h1>Reserved Teams</h1></v-expansion-panel-header
+            ><h2>Reserved Teams</h2></v-expansion-panel-header
           >
           <v-expansion-panel-content>
             <v-data-table
@@ -108,7 +113,7 @@
                       tile
                       color="primary"
                       class="primary hovering button mr-3 px-3"
-                      @click="dialog = true"
+                      @click="handleShow(team.item)"
                     >
                       <v-icon color="white" class="mr-2" small
                         >mdi-account-multiple</v-icon
@@ -138,9 +143,12 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in members" :key="item.name">
-                    <td class="text-center">{{ item.camper_name }}</td>
-                    <td class="text-center">{{ item.grade }}</td>
+                  <tr v-for="item in camp_team" :key="item.name">
+                    <td class="text-center">{{ item.name }}</td>
+                    <td class="text-center">
+                      <span v-if="item.is_child">{{ item.grade }}</span>
+                      <span v-else>---</span>
+                    </td>
                     <td class="text-center">{{ item.status }}</td>
                   </tr>
                 </tbody>
@@ -160,7 +168,7 @@
 </template>
 
 <script>
-import { IndexData } from "@/helpers/apiMethods";
+import { IndexData, ShowData } from "@/helpers/apiMethods";
 export default {
   data() {
     return {
@@ -212,24 +220,16 @@ export default {
         },
         { text: "", value: "", width: 150, sortable: false, align: "center" }
       ],
-      // teams: [{ available_teams: [], reserved_teams: [] }],
       available_teams: [],
       reserved_teams: [],
       dialog: false,
-      members: [
-        {
-          camper_name: "Ahmed",
-          grade: 5,
-          status: "App"
-        },
-        {
-          camper_name: "Saad",
-          grade: 3,
-          status: "App"
-        }
-      ],
-      panel: [0, 1]
+      panel: [0, 1],
+      currentTeamId: null,
+      camp_team: []
     };
+  },
+  components: {
+    Form: () => import("./components/Form")
   },
   created() {
     this.indexTeams();
@@ -246,6 +246,27 @@ export default {
           console.log(err);
         })
         .finally(() => {});
+    },
+    handleShow({ id }) {
+      this.currentTeamId = id;
+      this.dialog = true;
+      this.getMembersData();
+    },
+    getMembersData() {
+      ShowData({
+        reqName: `camps/${this.$route.params.id}/teams`,
+        id: this.currentTeamId
+      })
+        .then(res => {
+          const { camp_team } = res.data;
+          this.camp_team = { ...camp_team.members };
+          console.log(this.camp_team);
+          // this.handleShowOrderStructure();
+        })
+        .catch(err => {
+          // this.closeOrderDialog();
+          console.log(err);
+        });
     }
   }
 };

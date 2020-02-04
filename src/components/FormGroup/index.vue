@@ -6,7 +6,7 @@
         label: this.$t(`fields.${name}`)
       }"
       :hasErrors="hasErrors"
-      :listeners="{ input: () => preferredValidator.$touch() }"
+      :listeners="{ blur: () => preferredValidator.$touch() }"
     />
   </div>
 </template>

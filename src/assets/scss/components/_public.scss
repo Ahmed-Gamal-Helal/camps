@@ -6,3 +6,36 @@
 .font-bold {
   font-weight: bold !important;
 }
+.number-input {
+  &__button {
+    width: 56px !important;
+    background-color: $primary !important;
+    &:after {
+      height: 10px !important;
+      width: 2px !important;
+      background-color: white !important;
+    }
+    &:before {
+      height: 2px !important;
+      width: 10px !important;
+      background-color: white !important;
+    }
+  }
+  &__input {
+    height: 56px;
+  }
+  &:before {
+    content: "Spots";
+    top: 0;
+  }
+}
+.increment-label {
+  position: relative;
+  span {
+    position: absolute;
+    top: -24px;
+    left: 0;
+    z-index: 9;
+    font-size: 15px;
+  }
+}

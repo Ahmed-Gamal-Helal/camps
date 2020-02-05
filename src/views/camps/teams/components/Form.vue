@@ -83,6 +83,7 @@
         </v-row>
       </form>
     </formWrapper>
+    <!-- {{ available_teams }} -->
   </div>
 </template>
 
@@ -91,6 +92,12 @@ import { IndexData, StoreData } from "@/helpers/apiMethods";
 import { required } from "vuelidate/lib/validators";
 
 export default {
+  props: {
+    available_teams: {
+      type: Array,
+      default: () => {}
+    }
+  },
   data() {
     return {
       form: {
@@ -117,11 +124,6 @@ export default {
           this.groups = team_classification.map((el, index) => {
             return el.groups[index];
           });
-          // this.groups = team_group.filter(element => {
-          //   return element;
-          // });
-
-          console.log(this.groups);
         })
         .catch(err => {
           console.log(err);
@@ -134,6 +136,7 @@ export default {
         data: this.form
       })
         .then(res => {
+          this.available_teams.push(res.data.camp_team);
           // this.
           console.log("res", res.data);
           // history.go(-1);

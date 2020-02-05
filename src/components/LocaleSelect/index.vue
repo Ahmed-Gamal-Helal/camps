@@ -24,7 +24,10 @@ export default {
 
   data() {
     return {
-      items: [{ text: "English", value: "en" }, { text: "Arabic", value: "ar" }]
+      items: [
+        { text: "English", value: "en" },
+        { text: "Arabic", value: "ar" }
+      ]
     };
   },
   computed: {

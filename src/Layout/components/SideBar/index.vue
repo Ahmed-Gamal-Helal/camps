@@ -18,7 +18,11 @@
 
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app light>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-        <v-img :src="require('@/assets/imgs/logo.png')" fluid width="120px"></v-img>
+        <v-img
+          :src="require('@/assets/imgs/logo.png')"
+          fluid
+          width="120px"
+        ></v-img>
         <!-- <span>{{ $t("heading.wsadmin") }}</span> -->
         <!--class="hidden-sm-and-down" <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
       </v-toolbar-title>

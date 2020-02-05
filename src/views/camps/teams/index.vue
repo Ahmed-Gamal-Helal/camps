@@ -5,7 +5,7 @@
       <!-- Add / Edit Teams -->
       <section>
         <h1>Teams</h1>
-        <Form />
+        <Form :available_teams="available_teams" />
       </section>
       <v-expansion-panels v-model="panel" multiple>
         <v-expansion-panel>

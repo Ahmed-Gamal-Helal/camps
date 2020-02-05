@@ -32,9 +32,9 @@
       >
         <v-list-item slot="activator">
           <v-list-item-content>
-            <v-list-item-title>{{
-              generateTitle(item.meta.title)
-            }}</v-list-item-title>
+            <v-list-item-title>
+              {{ generateTitle(item.meta.title) }}
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 

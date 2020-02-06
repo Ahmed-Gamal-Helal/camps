@@ -23,6 +23,7 @@
   }
   &__input {
     height: 56px;
+    border: 1px solid $primary;
   }
   &:before {
     content: "Spots";

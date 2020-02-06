@@ -48,3 +48,6 @@ a {
 .gold-icon {
   color: $color-gold !important;
 }
+.delete, .edit {
+  cursor: pointer;
+}

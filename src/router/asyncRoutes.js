@@ -18,6 +18,16 @@ export const asyncRouterMap = [
           title: "camps",
           icon: "mdi-account-circle"
         }
+      },
+      {
+        path: "create",
+        component: () => import("@/views/camps/create"),
+        name: "campCreate",
+        hidden: true,
+        meta: {
+          title: "campCreate",
+          icon: "mdi-account-circle"
+        }
       }
     ]
   },

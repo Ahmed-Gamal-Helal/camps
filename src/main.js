@@ -11,6 +11,7 @@ import VueNumberInput from "@chenfengyuan/vue-number-input";
 Vue.use(VueNumberInput);
 import "./assets/scss/main.scss";
 import "./assets/fonts/Poppins/stylesheet.css";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 import Cookies from "js-cookie";
 

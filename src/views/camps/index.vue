@@ -6,6 +6,7 @@
         title="camps"
         actionButtonText="add_camp"
         :actionButton="true"
+        class="mb-12"
       />
       <v-data-table
         :headers="headers"
@@ -22,18 +23,18 @@
               </v-icon>
               <v-icon v-else>mdi-star-outline</v-icon>
             </td>
-            <td class="table__cell text-left name">{{ camp.item.name }}</td>
-            <td class="table__cell text-left">{{ camp.item.type_name }}</td>
-            <td class="table__cell text-left">
+            <td class="table__cell text-center name">{{ camp.item.name }}</td>
+            <td class="table__cell text-center">{{ camp.item.type_name }}</td>
+            <td class="table__cell text-center">
               {{ camp.item.location.location }}
             </td>
-            <td class="table__cell text-left">
+            <td class="table__cell text-center">
               {{ camp.item.start_date.date | moment("dddd, MMMM Do YYYY") }}
             </td>
-            <td class="table__cell text-left">
+            <td class="table__cell text-center">
               {{ camp.item.end_date.date | moment("dddd, MMMM Do YYYY") }}
             </td>
-            <td class="table__cell text-left">
+            <td class="table__cell text-center">
               <v-chip
                 v-if="!camp.item.online_payment"
                 small
@@ -78,31 +79,19 @@
 
 <script>
 import { IndexData } from "@/helpers/apiMethods";
+import TableHeaders from "@/helpers/TableHeaders";
+
 export default {
   data() {
     return {
       zero: 0,
-      headers: [
-        { text: "Shown", value: "available", align: "center", sortable: false },
-        {
-          text: "Name",
-          align: "left",
-          sortable: false,
-          value: "name"
-        },
-        { text: "Type", value: "type_name", sortable: false },
-        { text: "Location", value: "location.location", sortable: false },
-        { text: "Start Date", value: "start_date.date", sortable: false },
-        { text: "End Date", value: "end_date.date", sortable: false },
-        { text: "Online Payment", value: "online_payment", sortable: false },
-        { text: "Teams", value: "", align: "center", sortable: false },
-        { text: "", value: "", width: 110, sortable: false }
-      ],
+      headers: [],
       camps: []
     };
   },
   created() {
     this.indexCamps();
+    this.campsHeaders();
   },
   methods: {
     indexCamps() {
@@ -115,6 +104,20 @@ export default {
           console.log(err);
         })
         .finally(() => {});
+    },
+    campsHeaders() {
+      const headersList = [
+        "Shown",
+        "Name",
+        "Type",
+        "Location",
+        "Start Date",
+        "End Date",
+        "Online Payment",
+        "Teams",
+        "Actions"
+      ];
+      this.headers = TableHeaders(headersList);
     }
   }
 };

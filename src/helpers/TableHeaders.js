@@ -1,12 +1,12 @@
-import i18n from "@/lang";
+// import i18n from "@/lang";
 
 const createTableHeaders = (headersName = []) => {
   return headersName.map(header => {
     return {
-      text: header ? i18n.t(`table.${header}`) : "",
+      text: header,
       align: "center",
-      sortable: false
-      // width: header === "actions" && "1"
+      sortable: false,
+      width: header === "Actions" ? "150" : ""
     };
   });
 };

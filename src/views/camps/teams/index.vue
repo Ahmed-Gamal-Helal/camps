@@ -5,7 +5,11 @@
       <!-- Add / Edit Teams -->
       <section>
         <h1>Teams</h1>
-        <Form :available_teams="available_teams" />
+        <Form
+          :available_teams="available_teams"
+          :team_id="team_id"
+          :isEdited="isEdit"
+        />
       </section>
       <v-expansion-panels v-model="panel" multiple>
         <v-expansion-panel>
@@ -19,31 +23,25 @@
               :mobile-breakpoint="zero"
               class="table teams"
             >
-              <template v-slot:item="team">
+              <template v-slot:item="{ item, index }">
                 <tr class="table__row">
                   <td class="table__cell text-center">
-                    {{
-                      team.item.clasification
-                        ? team.item.clasification.name
-                        : "---"
-                    }}
+                    {{ item.clasification ? item.clasification.name : "---" }}
                   </td>
-                  <td class="table__cell text-center">{{ team.item.name }}</td>
+                  <td class="table__cell text-center">{{ item.name }}</td>
                   <td class="table__cell text-center">
-                    {{
-                      team.item.min_age + ` - ` + team.item.max_age + ` Years`
-                    }}
+                    {{ item.min_age + ` - ` + item.max_age + ` Years` }}
                   </td>
                   <td class="table__cell text-center">
-                    <span v-if="team.item.gender === 'F'">Female</span>
+                    <span v-if="item.gender === 'F'">Female</span>
                     <span v-else>Male</span>
                   </td>
                   <td class="table__cell text-center">
-                    {{ team.item.remaining_spots + ` Spots` }}
+                    {{ item.remaining_spots + ` Spots` }}
                   </td>
                   <td class="table__cell text-center">
                     <v-chip
-                      v-if="!team.item.is_enabled"
+                      v-if="!item.is_enabled"
                       small
                       color="#faddd2"
                       text-color="#ec531e"
@@ -61,11 +59,17 @@
                     </v-chip>
                   </td>
                   <td class="table__cell text-center">
-                    <router-link class="hovering mr-3 edit" to="/">
+                    <span
+                      @click="handleEdit(item, index)"
+                      class="hovering mr-3 edit"
+                    >
                       <v-icon small>mdi-pencil</v-icon><br />
                       Edit
-                    </router-link>
-                    <span class="hovering delete">
+                    </span>
+                    <span
+                      @click="handleDelete(item, index)"
+                      class="hovering delete"
+                    >
                       <v-icon small>mdi-delete</v-icon><br />
                       Delete
                     </span>
@@ -168,64 +172,22 @@
 </template>
 
 <script>
-import { IndexData, ShowData } from "@/helpers/apiMethods";
+import { IndexData, ShowData, DeleteData } from "@/helpers/apiMethods";
+import TableHeaders from "@/helpers/TableHeaders";
 export default {
   data() {
     return {
       zero: 0,
-      headers: [
-        {
-          text: "Classification",
-          align: "center",
-          sortable: false,
-          value: "clasification.name"
-        },
-        {
-          text: "Team Name",
-          align: "center",
-          sortable: false,
-          value: "name"
-        },
-        { text: "Age Group", value: "", sortable: false, align: "center" },
-        { text: "Gender", value: "gender", sortable: false, align: "center" },
-        {
-          text: "Remaining Spots",
-          value: "remaining_spots",
-          sortable: false,
-          align: "center"
-        },
-        { text: "Enabled", value: "enabled", sortable: false, align: "center" },
-        { text: "", value: "", width: 150, sortable: false, align: "center" }
-      ],
-      reserved_headers: [
-        {
-          text: "Classification",
-          align: "center",
-          sortable: false,
-          value: "clasification.name"
-        },
-        {
-          text: "Team Name",
-          align: "center",
-          sortable: false,
-          value: "name"
-        },
-        { text: "Age Group", value: "", sortable: false, align: "center" },
-        { text: "Gender", value: "gender", sortable: false, align: "center" },
-        {
-          text: "Remaining Spots",
-          value: "remaining_spots",
-          sortable: false,
-          align: "center"
-        },
-        { text: "", value: "", width: 150, sortable: false, align: "center" }
-      ],
+      headers: [],
+      reserved_headers: [],
       available_teams: [],
       reserved_teams: [],
       dialog: false,
       panel: [0, 1],
       currentTeamId: null,
-      camp_team: []
+      camp_team: [],
+      team_id: 0,
+      isEdit: false
     };
   },
   components: {
@@ -233,6 +195,7 @@ export default {
   },
   created() {
     this.indexTeams();
+    this.createTableHeaders();
   },
   methods: {
     indexTeams() {
@@ -252,6 +215,11 @@ export default {
       this.dialog = true;
       this.getMembersData();
     },
+    handleEdit({ id }, index) {
+      this.team_id = id;
+      console.log(index);
+      this.isEdit = true;
+    },
     getMembersData() {
       ShowData({
         reqName: `camps/${this.$route.params.id}/teams`,
@@ -267,6 +235,35 @@ export default {
           // this.closeOrderDialog();
           console.log(err);
         });
+    },
+    handleDelete({ id }, index) {
+      this.popUp().then(value => {
+        if (!value.dismiss) {
+          // /camps/1005/teams/68
+          DeleteData({
+            reqName: `/camps/${this.$route.params.id}/teams`,
+            id: id
+          })
+            .then(() => {
+              // this.available_teams.splice(index, 1);
+              this.$delete(this.available_teams, index);
+            })
+            .catch(err => console.log(err));
+        }
+      });
+    },
+    createTableHeaders() {
+      const headersList = [
+        "Classification",
+        "Team Name",
+        "Age Group",
+        "Gender",
+        "Remaining Spots",
+        "Enabled",
+        "Actions"
+      ];
+      this.headers = TableHeaders(headersList);
+      this.reserved_headers = TableHeaders(headersList.splice(1, 6));
     }
   }
 };

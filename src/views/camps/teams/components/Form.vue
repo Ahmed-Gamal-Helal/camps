@@ -4,7 +4,7 @@
       <!-- {{ form }} -->
       <form @submit.prevent="handleSave">
         <v-row>
-          <v-col md="3">
+          <v-col cols="12" md="3">
             <form-group
               name="classification_id"
               attribute="fields.classification_id"
@@ -19,18 +19,19 @@
                   clearable
                   v-bind="attrs"
                   v-on="listeners"
+                  @change="filterGroups"
                   v-model="form.classification_id"
                 ></v-select>
               </template>
             </form-group>
           </v-col>
-          <v-col md="3">
+          <v-col cols="12" md="3">
             <!-- :validator="v.guest_type.badge.size_id" -->
             <form-group name="group_id" attribute="fields.group_id">
               <template slot-scope="{ attrs, listeners }">
                 <v-select
                   :loading="loadingData"
-                  :items="groups"
+                  :items="classificationGroups"
                   item-text="name"
                   item-value="id"
                   outlined
@@ -38,11 +39,12 @@
                   v-bind="attrs"
                   v-on="listeners"
                   v-model="form.group_id"
+                  :disabled="!form.classification_id"
                 ></v-select>
               </template>
             </form-group>
           </v-col>
-          <v-col md="3">
+          <v-col cols="12" md="3">
             <!-- :validator="v.guest_type.badge.size_id" -->
             <form-group name="gender" attribute="fields.gender">
               <template slot-scope="{ attrs, listeners }">
@@ -60,7 +62,7 @@
               </template>
             </form-group>
           </v-col>
-          <v-col md="3"
+          <v-col cols="12" md="3"
             ><section class="increment-label">
               <span>Spots</span>
               <number-input
@@ -77,25 +79,33 @@
               large
               type="submit"
               width="30%"
+              :disabled="$v.form.$invalid"
               >Add New Team</v-btn
             >
           </v-col>
         </v-row>
       </form>
     </formWrapper>
-    <!-- {{ available_teams }} -->
   </div>
 </template>
 
 <script>
-import { IndexData, StoreData } from "@/helpers/apiMethods";
-import { required } from "vuelidate/lib/validators";
-
+import { IndexData, StoreData, ShowData } from "@/helpers/apiMethods";
+import { required, minValue } from "vuelidate/lib/validators";
 export default {
   props: {
     available_teams: {
       type: Array,
       default: () => {}
+    },
+    team_id: {
+      type: Number,
+      default: () => {}
+    },
+    isEdited: {
+      type: Boolean,
+      default: false,
+      required: true
     }
   },
   data() {
@@ -108,9 +118,24 @@ export default {
       },
       team_classification: [],
       groups: [],
-      gender: [{ text: "Female", value: "F" }, { text: "Male", value: "M" }],
+      gender: [
+        { text: "Female", value: "F" },
+        { text: "Male", value: "M" }
+      ],
       loadingData: false
     };
+  },
+  computed: {
+    classificationGroups() {
+      const classification_id = this.form.classification_id;
+      let groups = [];
+      this.team_classification.find(item => {
+        if (item.id === classification_id) {
+          groups = item.groups;
+        }
+      });
+      return groups;
+    }
   },
   created() {
     this.indexClassifications();
@@ -130,6 +155,7 @@ export default {
         })
         .finally(() => {});
     },
+    filterGroups() {},
     handleSave() {
       StoreData({
         reqName: `camps/${this.$route.params.id}/teams`,
@@ -137,13 +163,43 @@ export default {
       })
         .then(res => {
           this.available_teams.push(res.data.camp_team);
-          // this.
-          console.log("res", res.data);
-          // history.go(-1);
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.reset();
+        });
+    },
+    showData() {
+      ShowData({
+        reqName: `camps/${this.$route.params.id}/teams`,
+        id: this.team_id
+      })
+        .then(res => {
+          const { camp_team } = res.data;
+          this.form = camp_team;
+          this.form.classification_id = camp_team.clasification;
+          // this.form.group_id = this.classificationGroups;
+          // console.log(this.classificationGroups);
         })
         .catch(err => {
-          console.log("err", err.response);
+          console.log(err);
         });
+    },
+
+    reset() {
+      this.$v.form.$reset();
+      this.form = {};
+      this.$store.dispatch("ClearServerErrors");
+    }
+  },
+  watch: {
+    isEdited: {
+      handler(value) {
+        if (value) {
+          this.showData();
+        }
+      },
+      immediate: true
     }
   },
   validations: {
@@ -154,10 +210,14 @@ export default {
       group_id: {
         required
       },
-      gender: {}
+      gender: {
+        required
+      },
+      actual_count: {
+        required,
+        minValue: minValue(2)
+      }
     }
   }
 };
 </script>
-
-<style lang="scss" scoped></style>

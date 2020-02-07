@@ -4,7 +4,11 @@
     <v-container>
       <!-- Add / Edit Teams -->
       <section>
-        <h1>Teams</h1>
+        <h1>
+          <v-icon class="teams-icon" color="lighten-1" medium
+            >mdi-account-multiple-plus</v-icon
+          >Add Team
+        </h1>
         <Form
           :available_teams="available_teams"
           :team_id="team_id"
@@ -38,6 +42,14 @@
                   </td>
                   <td class="table__cell text-center">
                     {{ item.remaining_spots + ` Spots` }}
+                    <!-- <number-input
+                      v-if="isEdit"
+                      center
+                      v-model="x"
+                      :min="2"
+                      controls
+                    ></number-input>
+                    <span v-else>{{ item.remaining_spots + ` Spots` }}</span> -->
                   </td>
                   <td class="table__cell text-center">
                     <v-chip

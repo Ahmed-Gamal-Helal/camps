@@ -19,8 +19,8 @@
                   clearable
                   v-bind="attrs"
                   v-on="listeners"
-                  @change="filterGroups"
                   v-model="form.classification_id"
+                  :disabled="isEdited"
                 ></v-select>
               </template>
             </form-group>
@@ -39,12 +39,12 @@
                   v-bind="attrs"
                   v-on="listeners"
                   v-model="form.group_id"
-                  :disabled="!form.classification_id"
+                  :disabled="!form.classification_id || isEdited"
                 ></v-select>
               </template>
             </form-group>
           </v-col>
-          <v-col cols="12" md="3">
+          <v-col cols="12" :md="isEdited ? 2 : 3">
             <!-- :validator="v.guest_type.badge.size_id" -->
             <form-group name="gender" attribute="fields.gender">
               <template slot-scope="{ attrs, listeners }">
@@ -62,7 +62,7 @@
               </template>
             </form-group>
           </v-col>
-          <v-col cols="12" md="3"
+          <v-col cols="12" :md="isEdited ? 2 : 3"
             ><section class="increment-label">
               <span>Spots</span>
               <number-input
@@ -73,6 +73,12 @@
               ></number-input>
             </section>
           </v-col>
+          <v-col md="2" v-if="isEdited">
+            <v-checkbox
+              v-model="form.enabled"
+              :label="form.enabled ? 'Disable' : 'Enable'"
+            ></v-checkbox>
+          </v-col>
           <v-col cols="12" class="text-center">
             <v-btn
               class="success text-capitalize"
@@ -80,7 +86,8 @@
               type="submit"
               width="30%"
               :disabled="$v.form.$invalid"
-              >Add New Team</v-btn
+              ><span v-if="isEdited">Save</span
+              ><span v-else>Add New Team</span></v-btn
             >
           </v-col>
         </v-row>
@@ -90,7 +97,12 @@
 </template>
 
 <script>
-import { IndexData, StoreData, ShowData } from "@/helpers/apiMethods";
+import {
+  IndexData,
+  StoreData,
+  ShowData,
+  UpdateData
+} from "@/helpers/apiMethods";
 import { required, minValue } from "vuelidate/lib/validators";
 export default {
   props: {
@@ -114,7 +126,8 @@ export default {
         classification_id: "",
         group_id: "",
         gender: "",
-        actual_count: 0
+        actual_count: 0,
+        enabled: false
       },
       team_classification: [],
       groups: [],
@@ -155,8 +168,32 @@ export default {
         })
         .finally(() => {});
     },
-    filterGroups() {},
     handleSave() {
+      if (!this.isEdited) {
+        this.createTeam();
+      } else {
+        this.editTeam();
+      }
+    },
+    showData() {
+      ShowData({
+        reqName: `camps/${this.$route.params.id}/teams`,
+        id: this.team_id
+      })
+        .then(res => {
+          const { camp_team } = res.data;
+          this.form = camp_team;
+          this.form.classification_id = camp_team.classification;
+          this.form.group_id = camp_team.group;
+          this.form.enabled = camp_team.is_enabled;
+
+          console.log(camp_team.group);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    createTeam() {
       StoreData({
         reqName: `camps/${this.$route.params.id}/teams`,
         data: this.form
@@ -169,23 +206,40 @@ export default {
           this.reset();
         });
     },
-    showData() {
-      ShowData({
+    editTeam() {
+      const {
+        classification_id,
+        group_id,
+        // gender,
+        actual_count,
+        enabled
+      } = this.form;
+
+      UpdateData({
         reqName: `camps/${this.$route.params.id}/teams`,
+        data: {
+          classification_id,
+          group_id,
+          // gender,
+          actual_count,
+          enabled,
+          _method: "put"
+        },
         id: this.team_id
       })
         .then(res => {
-          const { camp_team } = res.data;
-          this.form = camp_team;
-          this.form.classification_id = camp_team.clasification;
-          // this.form.group_id = this.classificationGroups;
-          // console.log(this.classificationGroups);
+          // const { member } = res.data;
+          // this.$emit("set_edited_member", member);
+          console.log(res);
+          this.reset();
         })
         .catch(err => {
           console.log(err);
+        })
+        .finally(() => {
+          this.btnLoading = false;
         });
     },
-
     reset() {
       this.$v.form.$reset();
       this.form = {};
@@ -196,7 +250,9 @@ export default {
     isEdited: {
       handler(value) {
         if (value) {
-          this.showData();
+          setTimeout(() => {
+            this.showData();
+          }, 50);
         }
       },
       immediate: true

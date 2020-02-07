@@ -4,7 +4,7 @@
       <!-- {{ form }} -->
       <form @submit.prevent="handleSave">
         <v-row>
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="3" v-if="!isEdited">
             <form-group
               name="classification_id"
               attribute="fields.classification_id"
@@ -25,7 +25,7 @@
               </template>
             </form-group>
           </v-col>
-          <v-col cols="12" md="3">
+          <v-col cols="12" md="3" v-if="!isEdited">
             <!-- :validator="v.guest_type.badge.size_id" -->
             <form-group name="group_id" attribute="fields.group_id">
               <template slot-scope="{ attrs, listeners }">
@@ -44,7 +44,7 @@
               </template>
             </form-group>
           </v-col>
-          <v-col cols="12" :md="isEdited ? 2 : 3">
+          <v-col cols="12" :md="isEdited ? 4 : 3">
             <!-- :validator="v.guest_type.badge.size_id" -->
             <form-group name="gender" attribute="fields.gender">
               <template slot-scope="{ attrs, listeners }">
@@ -62,7 +62,7 @@
               </template>
             </form-group>
           </v-col>
-          <v-col cols="12" :md="isEdited ? 2 : 3"
+          <v-col cols="12" :md="isEdited ? 4 : 3"
             ><section class="increment-label">
               <span>Spots</span>
               <number-input
@@ -73,7 +73,7 @@
               ></number-input>
             </section>
           </v-col>
-          <v-col md="2" v-if="isEdited">
+          <v-col class="text-center" md="4" v-if="isEdited">
             <v-checkbox
               v-model="form.enabled"
               :label="form.enabled ? 'Disable' : 'Enable'"
@@ -163,9 +163,7 @@ export default {
             return el.groups[index];
           });
         })
-        .catch(err => {
-          console.log(err);
-        })
+        .catch(() => {})
         .finally(() => {});
     },
     handleSave() {
@@ -186,12 +184,8 @@ export default {
           this.form.classification_id = camp_team.classification;
           this.form.group_id = camp_team.group;
           this.form.enabled = camp_team.is_enabled;
-
-          console.log(camp_team.group);
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch(() => {});
     },
     createTeam() {
       StoreData({
@@ -210,7 +204,7 @@ export default {
       const {
         classification_id,
         group_id,
-        // gender,
+        gender,
         actual_count,
         enabled
       } = this.form;
@@ -220,7 +214,7 @@ export default {
         data: {
           classification_id,
           group_id,
-          // gender,
+          gender,
           actual_count,
           enabled,
           _method: "put"
@@ -228,16 +222,14 @@ export default {
         id: this.team_id
       })
         .then(res => {
-          // const { member } = res.data;
-          // this.$emit("set_edited_member", member);
-          console.log(res);
+          this.isEdited = false;
+          const camp_team = { ...res.data.camp_team };
+          this.$emit("set_edited_team", camp_team);
           this.reset();
         })
-        .catch(err => {
-          console.log(err);
-        })
+        .catch(() => {})
         .finally(() => {
-          this.btnLoading = false;
+          this.reset();
         });
     },
     reset() {

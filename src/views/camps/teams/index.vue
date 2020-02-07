@@ -7,9 +7,11 @@
         <h1>
           <v-icon class="teams-icon" color="lighten-1" medium
             >mdi-account-multiple-plus</v-icon
-          >Add Team
+          ><span v-if="!isEdit">Add Team</span>
+          <span v-else>Edit Team</span>
         </h1>
         <Form
+          @set_edited_team="handleEditTeam"
           :available_teams="available_teams"
           :team_id="team_id"
           :isEdited="isEdit"
@@ -30,7 +32,7 @@
               <template v-slot:item="{ item, index }">
                 <tr class="table__row">
                   <td class="table__cell text-center">
-                    {{ item.clasification ? item.clasification.name : "---" }}
+                    {{ item.classification ? item.classification.name : "---" }}
                   </td>
                   <td class="table__cell text-center">{{ item.name }}</td>
                   <td class="table__cell text-center">
@@ -106,8 +108,8 @@
                 <tr class="table__row">
                   <td class="table__cell text-center">
                     {{
-                      team.item.clasification
-                        ? team.item.clasification.name
+                      team.item.classification
+                        ? team.item.classification.name
                         : "---"
                     }}
                   </td>
@@ -199,6 +201,7 @@ export default {
       currentTeamId: null,
       camp_team: [],
       team_id: 0,
+      team_index: "",
       isEdit: false
     };
   },
@@ -227,9 +230,14 @@ export default {
       this.dialog = true;
       this.getMembersData();
     },
+    handleEditTeam(team) {
+      this.$set(this.available_teams, this.team_index, team);
+      this.isEdit = false;
+    },
     handleEdit({ id }, index) {
+      this.scrollTop();
       this.team_id = id;
-      console.log(index);
+      this.team_index = index;
       this.isEdit = true;
     },
     getMembersData() {
@@ -276,6 +284,12 @@ export default {
       ];
       this.headers = TableHeaders(headersList);
       this.reserved_headers = TableHeaders(headersList.splice(1, 6));
+    },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
   }
 };

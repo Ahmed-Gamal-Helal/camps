@@ -228,10 +228,18 @@ export default {
           this.reset();
         })
         .catch(() => {})
-        .finally(() => {
-          this.reset();
-        });
+        .finally(() => {});
     },
+    // teamSpots() {
+    //   const classification_id = this.form.classification_id;
+    //   let defaultSpots = this.form.actual_count;
+    //   this.team_classification.find(item => {
+    //     if (item.id === classification_id) {
+    //       defaultSpots = item.spots_per_team;
+    //     }
+    //   });
+    //   return defaultSpots;
+    // },
     reset() {
       this.$v.form.$reset();
       this.form = {};

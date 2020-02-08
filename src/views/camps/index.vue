@@ -7,6 +7,7 @@
         actionButtonText="add_camp"
         :actionButton="true"
         class="mb-12"
+        @FormAction="createCamp"
       />
       <v-data-table
         :headers="headers"
@@ -29,10 +30,10 @@
               {{ camp.item.location.location }}
             </td>
             <td class="table__cell text-center">
-              {{ camp.item.start_date.date | moment("dddd, MMMM Do YYYY") }}
+              {{ camp.item.start_date.date | moment("Do,MMM' YYYY") }}
             </td>
             <td class="table__cell text-center">
-              {{ camp.item.end_date.date | moment("dddd, MMMM Do YYYY") }}
+              {{ camp.item.end_date.date | moment("Do,MMM' YYYY") }}
             </td>
             <td class="table__cell text-center">
               <v-chip
@@ -61,7 +62,7 @@
               </router-link>
             </td>
             <td class="table__cell text-center">
-              <router-link class="hovering mr-3 edit" to="/">
+              <router-link class="hovering mr-1 edit" to="/">
                 <v-icon small>mdi-pencil</v-icon><br />
                 Edit
               </router-link>
@@ -118,6 +119,9 @@ export default {
         "Actions"
       ];
       this.headers = TableHeaders(headersList);
+    },
+    createCamp() {
+      this.$route.push("/camps/create");
     }
   }
 };

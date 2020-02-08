@@ -51,6 +51,7 @@ a {
 .delete,
 .edit {
   cursor: pointer;
+  font-size: 12px !important;
 }
 .teams-icon {
   border-radius: 50%;
@@ -60,4 +61,26 @@ a {
   color: #0088c3 !important;
   background-color: #d6eaf4;
   margin-right: 1rem;
+}
+.edit-team {
+  color: $primary;
+  font-size: 18px;
+}
+.form-box {
+  .v-input__slot {
+    background-color: #f2f2f2;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    padding-left: 10px;
+    min-height: 40px;
+    font-size: 14px;
+    .v-label--active {
+      top: -4px;
+    }
+  }
+  .transparent-slot {
+    .v-input__slot {
+      background-color: transparent;
+    }
+  }
 }

@@ -6,7 +6,7 @@ const createTableHeaders = (headersName = []) => {
       text: header,
       align: "center",
       sortable: false,
-      width: header === "Actions" ? "150" : ""
+      width: header === "Actions" ? "110" : ""
     };
   });
 };

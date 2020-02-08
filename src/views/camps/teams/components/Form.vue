@@ -1,17 +1,22 @@
 <template>
   <div>
     <h1>
-      <v-icon class="teams-icon" color="lighten-1" medium
+      <v-icon v-if="!isEdited" class="teams-icon" color="lighten-1" medium
         >mdi-account-multiple-plus</v-icon
-      ><span v-if="!isEdited">Add Team</span>
-      <span v-else>Edit {{ form.name }}</span>
+      ><v-icon v-else class="teams-icon" color="lighten-1" medium
+        >mdi-pencil</v-icon
+      >
+      <span v-if="!isEdited">Add Team</span>
+      <span v-else>Edit {{ form.name }} </span>
     </h1>
-    <h3 v-if="isEdited" class="mb-3">
-      {{ form.classification.name + ` > ` + form.group.name }}
-    </h3>
+    <h4 v-if="isEdited" class="mb-3 edit-team">
+      {{
+        form.classification.name + ` Classification [ ` + form.group.name + ` ]`
+      }}
+    </h4>
     <formWrapper :validator="$v.form">
       <!-- {{ form }} -->
-      <form @submit.prevent="handleSave">
+      <form @submit.prevent="handleSave" class="form-box">
         <v-row>
           <v-col cols="12" md="3" v-if="!isEdited">
             <form-group
@@ -25,7 +30,7 @@
                   @change="teamSpots"
                   item-text="name"
                   item-value="id"
-                  outlined
+                  regular
                   clearable
                   v-bind="attrs"
                   v-on="listeners"
@@ -44,7 +49,7 @@
                   :items="classificationGroups"
                   item-text="name"
                   item-value="id"
-                  outlined
+                  regular
                   clearable
                   v-bind="attrs"
                   v-on="listeners"
@@ -63,7 +68,7 @@
                   :items="gender"
                   item-text="text"
                   item-value="value"
-                  outlined
+                  regular
                   clearable
                   v-bind="attrs"
                   v-on="listeners"
@@ -83,7 +88,7 @@
               ></number-input>
             </section>
           </v-col>
-          <v-col class="text-center" md="4" v-if="isEdited">
+          <v-col class="text-center transparent-slot" md="4" v-if="isEdited">
             <v-checkbox
               v-model="form.enabled"
               :label="form.enabled ? 'Disable' : 'Enable'"
@@ -241,14 +246,16 @@ export default {
         .finally(() => {});
     },
     teamSpots() {
-      const classification_id = this.form.classification_id;
-      let defaultSpots = this.form.actual_count;
-      this.team_classification.find(item => {
-        if (item.id === classification_id) {
-          defaultSpots = item.spots_per_team;
-        }
-      });
-      this.form.actual_count = defaultSpots;
+      if (!this.isEdited) {
+        const classification_id = this.form.classification_id;
+        let defaultSpots = this.form.actual_count;
+        this.team_classification.find(item => {
+          if (item.id === classification_id) {
+            defaultSpots = item.spots_per_team;
+          }
+        });
+        this.form.actual_count = defaultSpots;
+      }
     },
     reset() {
       this.$v.form.$reset();

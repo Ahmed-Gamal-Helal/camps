@@ -6,9 +6,10 @@
 .font-bold {
   font-weight: bold !important;
 }
+
 .number-input {
   &__button {
-    width: 56px !important;
+    // width: 56px !important;
     background-color: $primary !important;
     &:after {
       height: 10px !important;
@@ -22,8 +23,8 @@
     }
   }
   &__input {
-    height: 56px;
-    border: 1px solid $primary;
+    // height: 56px;
+    border: 1px solid $primary !important;
   }
   &:before {
     content: "Spots";
@@ -32,6 +33,7 @@
 }
 .increment-label {
   position: relative;
+  margin-top: 17px;
   span {
     position: absolute;
     top: -24px;
@@ -39,4 +41,10 @@
     z-index: 2;
     font-size: 15px;
   }
+}
+.v-expansion-panel-content__wrap {
+  padding: 0;
+}
+body {
+  background-color: #fbfbfd;
 }

@@ -3,23 +3,15 @@
     <!-- <v-data-table :headers="headers" :items="camps" hide-default-footer></v-data-table> -->
     <v-container>
       <!-- Add / Edit Teams -->
-      <section>
-        <!-- <h1>
-          <v-icon class="teams-icon" color="lighten-1" medium
-            >mdi-account-multiple-plus</v-icon
-          ><span v-if="!isEdit">Add Team</span>
-          <span v-else>Edit Team</span>
-        </h1> -->
-        <Form
-          @set_edited_team="handleEditTeam"
-          :available_teams="available_teams"
-          :team_id="team_id"
-          :isEdited="isEdit"
-        />
-      </section>
+      <Form
+        @set_edited_team="handleEditTeam"
+        :available_teams="available_teams"
+        :team_id="team_id"
+        :isEdited="isEdit"
+      />
       <v-expansion-panels v-model="panel" multiple>
         <v-expansion-panel>
-          <v-expansion-panel-header
+          <v-expansion-panel-header class="px-0"
             ><h2>Available Teams</h2></v-expansion-panel-header
           >
           <v-expansion-panel-content>
@@ -44,14 +36,6 @@
                   </td>
                   <td class="table__cell text-center">
                     {{ item.remaining_spots + ` Spots` }}
-                    <!-- <number-input
-                      v-if="isEdit"
-                      center
-                      v-model="x"
-                      :min="2"
-                      controls
-                    ></number-input>
-                    <span v-else>{{ item.remaining_spots + ` Spots` }}</span> -->
                   </td>
                   <td class="table__cell text-center">
                     <v-chip
@@ -75,7 +59,7 @@
                   <td class="table__cell text-center">
                     <span
                       @click="handleEdit(item, index)"
-                      class="hovering mr-3 edit"
+                      class="hovering mr-1 edit"
                     >
                       <v-icon small>mdi-pencil</v-icon><br />
                       Edit
@@ -129,8 +113,9 @@
                   <td class="table__cell pa-0 text-center">
                     <v-btn
                       tile
+                      small
                       color="primary"
-                      class="primary hovering button mr-3 px-3"
+                      class="primary hovering button mr-3 px-2"
                       @click="handleShow(team.item)"
                     >
                       <v-icon color="white" class="mr-2" small
@@ -281,7 +266,9 @@ export default {
         "Actions"
       ];
       this.headers = TableHeaders(headersList);
-      this.reserved_headers = TableHeaders(headersList.splice(1, 6));
+      this.reserved_headers = TableHeaders(
+        headersList.filter(e => e !== "Enabled")
+      );
     },
     scrollTop() {
       window.scrollTo({

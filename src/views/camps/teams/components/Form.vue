@@ -1,5 +1,14 @@
 <template>
   <div>
+    <h1>
+      <v-icon class="teams-icon" color="lighten-1" medium
+        >mdi-account-multiple-plus</v-icon
+      ><span v-if="!isEdited">Add Team</span>
+      <span v-else>Edit {{ form.name }}</span>
+    </h1>
+    <h3 v-if="isEdited" class="mb-3">
+      {{ form.classification.name + ` > ` + form.group.name }}
+    </h3>
     <formWrapper :validator="$v.form">
       <!-- {{ form }} -->
       <form @submit.prevent="handleSave">
@@ -13,6 +22,7 @@
                 <v-select
                   :loading="loadingData"
                   :items="team_classification"
+                  @change="teamSpots"
                   item-text="name"
                   item-value="id"
                   outlined
@@ -230,16 +240,16 @@ export default {
         .catch(() => {})
         .finally(() => {});
     },
-    // teamSpots() {
-    //   const classification_id = this.form.classification_id;
-    //   let defaultSpots = this.form.actual_count;
-    //   this.team_classification.find(item => {
-    //     if (item.id === classification_id) {
-    //       defaultSpots = item.spots_per_team;
-    //     }
-    //   });
-    //   return defaultSpots;
-    // },
+    teamSpots() {
+      const classification_id = this.form.classification_id;
+      let defaultSpots = this.form.actual_count;
+      this.team_classification.find(item => {
+        if (item.id === classification_id) {
+          defaultSpots = item.spots_per_team;
+        }
+      });
+      this.form.actual_count = defaultSpots;
+    },
     reset() {
       this.$v.form.$reset();
       this.form = {};

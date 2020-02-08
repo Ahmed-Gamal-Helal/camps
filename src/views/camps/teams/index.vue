@@ -4,12 +4,12 @@
     <v-container>
       <!-- Add / Edit Teams -->
       <section>
-        <h1>
+        <!-- <h1>
           <v-icon class="teams-icon" color="lighten-1" medium
             >mdi-account-multiple-plus</v-icon
           ><span v-if="!isEdit">Add Team</span>
           <span v-else>Edit Team</span>
-        </h1>
+        </h1> -->
         <Form
           @set_edited_team="handleEditTeam"
           :available_teams="available_teams"
@@ -147,7 +147,11 @@
       <v-dialog v-model="dialog" width="500">
         <v-card>
           <v-card-title class="font-bold py-5" primary-title>
-            <h3>Members of Team</h3>
+            <h3>
+              <span>Members of Team</span>
+            </h3>
+            <v-spacer></v-spacer>
+            <v-icon @click="dialog = false">mdi-close</v-icon>
           </v-card-title>
 
           <v-card-text class="pa-0">
@@ -164,7 +168,7 @@
                   <tr v-for="item in camp_team" :key="item.name">
                     <td class="text-center">{{ item.name }}</td>
                     <td class="text-center">
-                      <span v-if="item.is_child">{{ item.grade }}</span>
+                      <span v-if="item.is_child">{{ item.grade_name }}</span>
                       <span v-else>---</span>
                     </td>
                     <td class="text-center">{{ item.status }}</td>
@@ -173,12 +177,6 @@
               </template>
             </v-simple-table>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false">
-              Close
-            </v-btn>
-          </v-card-actions>
         </v-card>
       </v-dialog>
     </v-container>

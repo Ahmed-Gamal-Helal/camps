@@ -84,66 +84,223 @@
           </v-col>
           <v-col class="py-2" cols="12" md="6">
             <v-dialog
-              ref="dialog"
-              v-model="modal"
-              :return-value.sync="date"
+              ref="registerationDialog"
+              v-model="registeration_start_modal"
+              :return-value.sync="registeration_start"
               persistent
               width="290px"
             >
               <template v-slot:activator="{ on }">
                 <v-text-field
-                  v-model="date"
+                  v-model="registeration_start"
                   label="Registration Start"
                   readonly
                   clearable
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker v-model="date" scrollable>
+              <v-date-picker v-model="registeration_start" scrollable>
                 <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="modal = false"
+                <v-btn
+                  text
+                  color="primary"
+                  @click="registeration_start_modal = false"
                   >Cancel</v-btn
                 >
-                <v-btn text color="primary" @click="$refs.dialog.save(date)"
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.registerationDialog.save(registeration_start)"
                   >OK</v-btn
                 >
               </v-date-picker>
             </v-dialog>
           </v-col>
-          <!-- <v-col cols="12" :md="isEdited ? 4 : 3">
-            <form-group name="gender" attribute="fields.gender">
-              <template slot-scope="{ attrs, listeners }">
-                <v-select
-                  :loading="loadingData"
-                  :items="gender"
-                  item-text="text"
-                  item-value="value"
-                  regular
+          <v-col class="py-2" cols="12" md="6">
+            <v-dialog
+              ref="closingDate"
+              v-model="closing_date_modal"
+              :return-value.sync="closing_date"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="closing_date"
+                  label="Closing Date"
+                  readonly
                   clearable
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="closing_date" scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="closing_date_modal = false"
+                  >Cancel</v-btn
+                >
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.closingDate.save(closing_date)"
+                  >OK</v-btn
+                >
+              </v-date-picker>
+            </v-dialog>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <v-dialog
+              ref="startDate"
+              v-model="start_date_modal"
+              :return-value.sync="start_date"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="start_date"
+                  label="Start Date"
+                  readonly
+                  clearable
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="start_date" scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="start_date_modal = false"
+                  >Cancel</v-btn
+                >
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.startDate.save(start_date)"
+                  >OK</v-btn
+                >
+              </v-date-picker>
+            </v-dialog>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <v-dialog
+              ref="endDate"
+              v-model="end_date_modal"
+              :return-value.sync="end_date"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="end_date"
+                  label="End Date"
+                  readonly
+                  clearable
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker v-model="end_date" scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="end_date_modal = false"
+                  >Cancel</v-btn
+                >
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.endDate.save(end_date)"
+                  >OK</v-btn
+                >
+              </v-date-picker>
+            </v-dialog>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <v-dialog
+              ref="arrivalDialog"
+              v-model="arrival_time_dialog"
+              :return-value.sync="arrival_time"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="arrival_time"
+                  label="Arrival Time"
+                  class="mt-0"
+                  readonly
+                  clearable
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="arrival_time_dialog"
+                v-model="arrival_time"
+                full-width
+              >
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="arrival_time_dialog = false"
+                  >Cancel</v-btn
+                >
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.arrivalDialog.save(arrival_time)"
+                  >OK</v-btn
+                >
+              </v-time-picker>
+            </v-dialog>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <v-dialog
+              ref="departureDialog"
+              v-model="departure_time_dialog"
+              :return-value.sync="departure_time"
+              persistent
+              width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="departure_time"
+                  label="Departure Time"
+                  class="mt-0"
+                  readonly
+                  clearable
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="departure_time_dialog"
+                v-model="departure_time"
+                full-width
+              >
+                <v-spacer></v-spacer>
+                <v-btn
+                  text
+                  color="primary"
+                  @click="departure_time_dialog = false"
+                  >Cancel</v-btn
+                >
+                <v-btn
+                  text
+                  color="primary"
+                  @click="$refs.departureDialog.save(departure_time)"
+                  >OK</v-btn
+                >
+              </v-time-picker>
+            </v-dialog>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <form-group
+              name="number_of_days"
+              :attribute="`fields.number_of_days`"
+            >
+              <template slot-scope="{ attrs, listeners }">
+                <v-text-field
                   v-bind="attrs"
                   v-on="listeners"
-                  v-model="form.gender"
-                ></v-select>
+                  regular
+                  v-model.trim="form.number_of_days"
+                  type="number"
+                >
+                </v-text-field>
               </template>
             </form-group>
           </v-col>
-          <v-col cols="12" :md="isEdited ? 4 : 3"
-            ><section class="increment-label">
-              <span>Spots</span>
-              <number-input
-                center
-                v-model="form.actual_count"
-                :min="2"
-                controls
-              ></number-input>
-            </section>
-          </v-col>
-          <v-col class="text-center transparent-slot" md="4" v-if="isEdited">
-            <v-checkbox
-              v-model="form.enabled"
-              :label="form.enabled ? 'Disable' : 'Enable'"
-            ></v-checkbox>
-          </v-col> -->
           <v-col cols="12" class="text-center">
             <v-btn
               class="success text-capitalize"
@@ -196,15 +353,18 @@ export default {
         enabled: false
       },
       camp_types: [],
-      date: "",
-      //new Date().toISOString().substr(0, 10)
-      menu: false,
-      modal: false,
-      groups: [],
-      gender: [
-        { text: "Female", value: "F" },
-        { text: "Male", value: "M" }
-      ],
+      registeration_start: "",
+      registeration_start_modal: false,
+      closing_date: "",
+      closing_date_modal: false,
+      start_date: "",
+      start_date_modal: false,
+      end_date: "",
+      end_date_modal: false,
+      arrival_time: null,
+      departure_time: null,
+      arrival_time_dialog: false,
+      departure_time_dialog: false,
       loadingData: false
     };
   },
@@ -347,5 +507,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped></style>

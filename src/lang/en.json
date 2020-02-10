@@ -36,7 +36,8 @@
     "camp_theme": "Camp Theme",
     "short_name": "Short Name",
     "camp_type": "Camp Type",
-    "camp_sub_type": "Camp Sub Type"
+    "camp_sub_type": "Camp Sub Type",
+    "number_of_days": "Number Of Days"
   },
   "validation": {
     "required": "%{attribute} is required",

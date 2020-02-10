@@ -2,13 +2,22 @@
   <main>
     <!-- <v-data-table :headers="headers" :items="camps" hide-default-footer></v-data-table> -->
     <v-container>
-      <global-toolbar
-        title="camps"
-        actionButtonText="add_camp"
-        :actionButton="true"
-        class="mb-12"
-        @FormAction="createCamp"
-      />
+      <v-toolbar flat class="main-header mb-12">
+        <v-toolbar-title class="main-header__title">
+          <h1>Camps</h1>
+        </v-toolbar-title>
+
+        <v-spacer></v-spacer>
+        <v-toolbar-items class="main-header__contents">
+          <v-btn
+            class="button btn-height--1 my-auto mx-1"
+            color="success"
+            to="/camps/create"
+          >
+            <span class="mx-2">Add Camp</span>
+          </v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
       <v-data-table
         :headers="headers"
         :items="camps"

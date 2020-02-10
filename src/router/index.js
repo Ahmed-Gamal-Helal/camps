@@ -45,6 +45,15 @@ export const constantRouterMap = [
           icon: "mdi-view-dashboard",
           title: "camps"
         }
+      },
+      {
+        path: "/camps/create",
+        component: () => import("@/views/camps/create"),
+        name: "CampsCreate",
+        meta: {
+          icon: "mdi-view-dashboard",
+          title: "campsCreate"
+        }
       }
     ]
   },

@@ -32,7 +32,11 @@
     "date": "Event Date",
     "classification_id": "Classification",
     "group_id": "Group",
-    "gender": "Gender"
+    "gender": "Gender",
+    "camp_theme": "Camp Theme",
+    "short_name": "Short Name",
+    "camp_type": "Camp Type",
+    "camp_sub_type": "Camp Sub Type"
   },
   "validation": {
     "required": "%{attribute} is required",

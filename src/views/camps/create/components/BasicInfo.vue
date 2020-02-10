@@ -1,66 +1,116 @@
 <template>
-  <div>
-    <h1>
-      <v-icon v-if="!isEdited" class="teams-icon" color="lighten-1" medium
-        >mdi-account-multiple-plus</v-icon
-      ><v-icon v-else class="teams-icon" color="lighten-1" medium
-        >mdi-pencil</v-icon
-      >
-      <span v-if="!isEdited">Add Team</span>
-      <span v-else>Edit {{ form.name }} </span>
-    </h1>
-    <h4 v-if="isEdited" class="mb-3 edit-team">
-      {{
-        form.classification.name + ` Classification [ ` + form.group.name + ` ]`
-      }}
-    </h4>
+  <section>
     <formWrapper :validator="$v.form">
       <!-- {{ form }} -->
       <form @submit.prevent="handleSave" class="form-box">
         <v-row>
-          <v-col cols="12" md="3" v-if="!isEdited">
-            <form-group
-              name="classification_id"
-              attribute="fields.classification_id"
+          <v-col class="py-2" cols="12">
+            <form-group name="name" :attribute="`fields.name`">
+              <template slot-scope="{ attrs, listeners }">
+                <v-text-field
+                  v-bind="attrs"
+                  v-on="listeners"
+                  regular
+                  v-model.trim="form.name"
+                  type="text"
+                >
+                </v-text-field>
+              </template>
+            </form-group>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <form-group name="camp_theme" :attribute="`fields.camp_theme`">
+              <template slot-scope="{ attrs, listeners }">
+                <v-text-field
+                  v-bind="attrs"
+                  v-on="listeners"
+                  regular
+                  v-model.trim="form.camp_theme"
+                  type="text"
+                >
+                </v-text-field>
+              </template>
+            </form-group>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <form-group name="short_name" :attribute="`fields.short_name`">
+              <template slot-scope="{ attrs, listeners }">
+                <v-text-field
+                  v-bind="attrs"
+                  v-on="listeners"
+                  regular
+                  v-model.trim="form.short_name"
+                  type="text"
+                >
+                </v-text-field>
+              </template>
+            </form-group>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <form-group name="camp_type" attribute="fields.camp_type">
+              <template slot-scope="{ attrs, listeners }">
+                <v-select
+                  :loading="loadingData"
+                  :items="camp_types"
+                  item-text="name"
+                  item-value="id"
+                  regular
+                  clearable
+                  v-bind="attrs"
+                  v-on="listeners"
+                  v-model="form.camp_type"
+                ></v-select>
+              </template>
+            </form-group>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <!-- :validator="v.guest_type.badge.size_id" -->
+            <form-group name="camp_sub_type" attribute="fields.camp_sub_type">
+              <template slot-scope="{ attrs, listeners }">
+                <v-select
+                  :loading="loadingData"
+                  :items="campSubTypes"
+                  item-text="name"
+                  item-value="id"
+                  regular
+                  clearable
+                  v-bind="attrs"
+                  v-on="listeners"
+                  v-model="form.camp_sub_type"
+                  :disabled="!form.camp_type"
+                ></v-select>
+              </template>
+            </form-group>
+          </v-col>
+          <v-col class="py-2" cols="12" md="6">
+            <v-dialog
+              ref="dialog"
+              v-model="modal"
+              :return-value.sync="date"
+              persistent
+              width="290px"
             >
-              <template slot-scope="{ attrs, listeners }">
-                <v-select
-                  :loading="loadingData"
-                  :items="team_classification"
-                  @change="teamSpots"
-                  item-text="name"
-                  item-value="id"
-                  regular
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="date"
+                  label="Registration Start"
+                  readonly
                   clearable
-                  v-bind="attrs"
-                  v-on="listeners"
-                  v-model="form.classification_id"
-                  :disabled="isEdited"
-                ></v-select>
+                  v-on="on"
+                ></v-text-field>
               </template>
-            </form-group>
+              <v-date-picker v-model="date" scrollable>
+                <v-spacer></v-spacer>
+                <v-btn text color="primary" @click="modal = false"
+                  >Cancel</v-btn
+                >
+                <v-btn text color="primary" @click="$refs.dialog.save(date)"
+                  >OK</v-btn
+                >
+              </v-date-picker>
+            </v-dialog>
           </v-col>
-          <v-col cols="12" md="3" v-if="!isEdited">
-            <!-- :validator="v.guest_type.badge.size_id" -->
-            <form-group name="group_id" attribute="fields.group_id">
-              <template slot-scope="{ attrs, listeners }">
-                <v-select
-                  :loading="loadingData"
-                  :items="classificationGroups"
-                  item-text="name"
-                  item-value="id"
-                  regular
-                  clearable
-                  v-bind="attrs"
-                  v-on="listeners"
-                  v-model="form.group_id"
-                  :disabled="!form.classification_id || isEdited"
-                ></v-select>
-              </template>
-            </form-group>
-          </v-col>
-          <v-col cols="12" :md="isEdited ? 4 : 3">
-            <!-- :validator="v.guest_type.badge.size_id" -->
+          <!-- <v-col cols="12" :md="isEdited ? 4 : 3">
             <form-group name="gender" attribute="fields.gender">
               <template slot-scope="{ attrs, listeners }">
                 <v-select
@@ -93,7 +143,7 @@
               v-model="form.enabled"
               :label="form.enabled ? 'Disable' : 'Enable'"
             ></v-checkbox>
-          </v-col>
+          </v-col> -->
           <v-col cols="12" class="text-center">
             <v-btn
               class="success text-capitalize"
@@ -102,13 +152,13 @@
               width="30%"
               :disabled="$v.form.$invalid"
               ><span v-if="isEdited">Save</span
-              ><span v-else>Add New Team</span></v-btn
+              ><span v-else>Add New Camp</span></v-btn
             >
           </v-col>
         </v-row>
       </form>
     </formWrapper>
-  </div>
+  </section>
 </template>
 
 <script>
@@ -138,13 +188,18 @@ export default {
   data() {
     return {
       form: {
-        classification_id: "",
-        group_id: "",
+        name: "",
+        camp_type: "",
+        camp_sub_type: "",
         gender: "",
         actual_count: 0,
         enabled: false
       },
-      team_classification: [],
+      camp_types: [],
+      date: "",
+      //new Date().toISOString().substr(0, 10)
+      menu: false,
+      modal: false,
       groups: [],
       gender: [
         { text: "Female", value: "F" },
@@ -154,28 +209,28 @@ export default {
     };
   },
   computed: {
-    classificationGroups() {
-      const classification_id = this.form.classification_id;
-      let groups = [];
-      this.team_classification.find(item => {
-        if (item.id === classification_id) {
-          groups = item.groups;
+    campSubTypes() {
+      const camp_type = this.form.camp_type;
+      let camp_sub_types = [];
+      this.camp_types.find(item => {
+        if (item.id === camp_type) {
+          camp_sub_types = item.camp_sub_types;
         }
       });
-      return groups;
+      return camp_sub_types;
     }
   },
   created() {
-    this.indexClassifications();
+    this.indexCampTypes();
   },
   methods: {
-    indexClassifications() {
-      IndexData({ reqName: `camps/${this.$route.params.id}/classifications` })
+    indexCampTypes() {
+      IndexData({ reqName: `/camp-types` })
         .then(res => {
-          const { team_classification } = res.data;
-          this.team_classification = team_classification;
-          this.groups = team_classification.map((el, index) => {
-            return el.groups[index];
+          const { data } = res.data;
+          this.camp_types = data;
+          this.camp_sub_types = data.map((el, index) => {
+            return el.camp_sub_types[index];
           });
         })
         .catch(() => {})
@@ -246,18 +301,6 @@ export default {
         .catch(() => {})
         .finally(() => {});
     },
-    teamSpots() {
-      if (!this.isEdited) {
-        const classification_id = this.form.classification_id;
-        let defaultSpots = this.form.actual_count;
-        this.team_classification.find(item => {
-          if (item.id === classification_id) {
-            defaultSpots = item.spots_per_team;
-          }
-        });
-        this.form.actual_count = defaultSpots;
-      }
-    },
     reset() {
       this.$v.form.$reset();
       this.form = {};
@@ -278,6 +321,15 @@ export default {
   },
   validations: {
     form: {
+      name: {
+        required
+      },
+      short_name: {
+        required
+      },
+      camp_theme: {
+        required
+      },
       classification_id: {
         required
       },
@@ -295,3 +347,5 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped></style>

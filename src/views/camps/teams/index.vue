@@ -19,6 +19,7 @@
               :headers="headers"
               :items="available_teams"
               :mobile-breakpoint="zero"
+              hide-default-footer
               class="table teams"
             >
               <template v-slot:item="{ item, index }">
@@ -78,7 +79,7 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
         <v-expansion-panel class="mt-4">
-          <v-expansion-panel-header
+          <v-expansion-panel-header class="px-0"
             ><h2>Reserved Teams</h2></v-expansion-panel-header
           >
           <v-expansion-panel-content>
@@ -86,6 +87,7 @@
               :headers="reserved_headers"
               :items="reserved_teams"
               :mobile-breakpoint="zero"
+              hide-default-footer
               class="table teams"
             >
               <template v-slot:item="team">

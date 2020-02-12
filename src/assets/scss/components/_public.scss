@@ -48,3 +48,30 @@
 body {
   background-color: #fbfbfd;
 }
+.heading-counter {
+  color: $secondary;
+  font-weight: bold;
+  .counter {
+    padding: 4px 15px;
+    border: 1px solid;
+    border-radius: 50%;
+    margin-right: .5rem;
+  }
+  @media(max-width: 767px) {
+    font-size: 18px;
+    .counter {
+      padding: 4px 12px;
+    }
+  }
+}
+.v-input--is-label-active {
+  .v-input__slot {
+    background-color: white;
+    border: 1px solid $primary;
+  }
+}
+.main-header {
+  .v-toolbar__content {
+    padding: 0;
+  }
+}

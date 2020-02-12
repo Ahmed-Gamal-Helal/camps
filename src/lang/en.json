@@ -37,7 +37,9 @@
     "short_name": "Short Name",
     "camp_type": "Camp Type",
     "camp_sub_type": "Camp Sub Type",
-    "number_of_days": "Number Of Days"
+    "number_of_days": "Number Of Days",
+    "min_grade": "Min Grade",
+    "max_grade": "Max Grade"
   },
   "validation": {
     "required": "%{attribute} is required",

@@ -35,7 +35,7 @@
               clearable
               v-bind="attrs"
               v-on="listeners"
-              v-model="form.groups.classification_id"
+              v-model="groups.classification_id"
             ></v-select>
           </template>
         </form-group>
@@ -52,7 +52,7 @@
               clearable
               v-bind="attrs"
               v-on="listeners"
-              v-model="form.groups.min_grade_id"
+              v-model="groups.min_grade_id"
               :disabled="dimmedActions"
             ></v-select>
           </template>
@@ -70,7 +70,7 @@
               clearable
               v-bind="attrs"
               v-on="listeners"
-              v-model="form.groups.max_grade_id"
+              v-model="groups.max_grade_id"
               :disabled="dimmedActions"
             ></v-select>
           </template>
@@ -81,7 +81,7 @@
           <span>Min Age</span>
           <number-input
             center
-            v-model="form.groups.min_age"
+            v-model="groups.min_age"
             :min="1"
             controls
             :step="0.1"
@@ -94,7 +94,7 @@
           <span>Max Age</span>
           <number-input
             center
-            v-model="form.groups.max_age"
+            v-model="groups.max_age"
             :min="1"
             controls
             :step="0.1"
@@ -107,8 +107,8 @@
           <span>Teams</span>
           <number-input
             center
-            v-model="form.groups.teams"
-            :min="1"
+            v-model="groups.teams"
+            :min="groups.teams_per_group || 2"
             controls
           ></number-input>
         </section>
@@ -118,7 +118,7 @@
           <span>Teams Per Group</span>
           <number-input
             center
-            v-model="form.groups.teams_per_group"
+            v-model="groups.teams_per_group"
             :min="1"
             controls
           ></number-input>
@@ -129,7 +129,7 @@
           <span>Spots Per Team</span>
           <number-input
             center
-            v-model="form.groups.spots_per_team"
+            v-model="groups.spots_per_team"
             :min="1"
             controls
             :disabled="dimmedActions"
@@ -186,6 +186,10 @@ export default {
     form: {
       type: Object,
       default: () => {}
+    },
+    groups: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -196,7 +200,7 @@ export default {
       minGrade: [],
       maxGrade: [],
       detailed_classification: {},
-      dimmedActions: false
+      dimmedActions: true
     };
   },
   created() {
@@ -215,14 +219,14 @@ export default {
         .finally(() => {});
     },
     teamSpots() {
-      const { classification_id } = this.form.groups;
+      const { classification_id } = this.groups;
       this.classifications.forEach(item => {
         if (item.id === classification_id) {
-          this.form.groups.spots_per_team = item.spots_per_team;
-          this.form.groups.min_age = item.min_age;
-          this.form.groups.max_age = item.max_age;
-          this.form.groups.min_grade_id = item.min_grade.id;
-          this.form.groups.max_grade_id = item.max_grade.id;
+          this.groups.spots_per_team = item.spots_per_team;
+          this.groups.min_age = item.min_age;
+          this.groups.max_age = item.max_age;
+          this.groups.min_grade_id = item.min_grade.id;
+          this.groups.max_grade_id = item.max_grade.id;
           const { name, id } = item.min_grade;
           if (item.name !== "Other") {
             this.dimmedActions = true;
@@ -233,13 +237,16 @@ export default {
           this.maxGrade = [
             { id: item.max_grade.id, name: item.max_grade.name }
           ];
-
           this.detailed_classification = { ...item };
+          this.detailed_classification = {
+            ...this.detailed_classification,
+            ...this.groups
+          };
         }
       });
     },
     addButtonCheck() {
-      if (this.form.groups.classification_id === "") {
+      if (this.groups.classification_id === "") {
         return true;
       } else {
         return false;
@@ -259,31 +266,31 @@ export default {
       this.groupsHeaders = TableHeaders(headersList);
     },
     addGroup() {
-      // const group = { ...this.form.groups };
+      // const group = { ...this.groups };
       this.classifications = this.classifications.filter(
         item => item.id !== this.detailed_classification.id
       );
       this.groupsAdded.push(this.detailed_classification);
-      this.reset();
       this.$emit("handle_table_data", this.groupsAdded);
+      this.reset();
 
       // group.name = this.classifications.filter(
       //   el => el.id === group.classification_id
       // )[0].name;
-      console.log(this.groupsAdded);
+      // console.log(this.groupsAdded);
     },
     handleDelete() {
       console.log("xx");
     },
     reset() {
-      this.form.groups.classification_id = "";
-      this.form.groups.teams_per_group = "";
-      this.form.groups.spots_per_team = "";
-      this.form.groups.teams = "";
-      this.form.groups.min_age = "";
-      this.form.groups.max_age = "";
-      this.form.groups.min_grade_id = "";
-      this.form.groups.max_grade_id = "";
+      this.groups.classification_id = "";
+      this.groups.teams_per_group = "";
+      this.groups.spots_per_team = "";
+      this.groups.teams = "";
+      this.groups.min_age = "";
+      this.groups.max_age = "";
+      this.groups.min_grade_id = "";
+      this.groups.max_grade_id = "";
     }
   }
 };

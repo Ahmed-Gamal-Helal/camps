@@ -14,11 +14,12 @@
               <age-groups
                 :v="$v"
                 :form="form"
+                :groups="groups"
                 @handle_table_data="handleTableData"
               />
               <hr class="my-12" />
               <camp-prices :form="form" />
-              <hr class="my-12" />
+              <!-- <hr class="my-12" /> -->
               <v-btn
                 class="success text-capitalize"
                 large
@@ -61,19 +62,26 @@ export default {
         end_date: "",
         arrival_time: "",
         departure_time: "",
-        no_of_days: "",
-        // Age Group
-        groups: {
-          classification_id: "",
-          min_grade_id: "",
-          max_grade_id: "",
-          min_age: 0,
-          max_age: 0,
-          teams: 0,
-          teams_per_group: 0,
-          spots_per_team: 0
-        },
-        price: 0
+        no_of_days: null,
+        price: 0,
+
+        bus_price: null,
+        meal_price: null,
+        photos_price: null,
+        early_check_in_price: null,
+        late_check_out_price: null,
+        special_needs_price: null
+      },
+      // Age Group
+      groups: {
+        classification_id: "",
+        min_grade_id: "",
+        max_grade_id: "",
+        min_age: 0,
+        max_age: 0,
+        teams: null,
+        teams_per_group: null,
+        spots_per_team: 0
       },
       items: []
     };
@@ -92,11 +100,32 @@ export default {
     },
     createTeam() {
       const formData = new FormData();
-      this.items.forEach(item => {
-        console.log(item, "x");
+      this.items.forEach((item, index) => {
+        Object.keys(item).forEach(group => {
+          if (
+            group === "id" ||
+            group === "short_name" ||
+            group === "name" ||
+            group === "description" ||
+            group === "groups" ||
+            group === "min_grade" ||
+            group === "max_grade"
+          ) {
+            return;
+          }
+          if (group === "min_grade" || group === "max_grade") {
+            formData.append(`groups[${index}][${group}]`, item[group].id);
+          } else {
+            formData.append(`groups[${index}][${group}]`, item[group]);
+          }
+        });
       });
-      Object.keys(this.form.groups).forEach(group => {
-        formData.append(`groups[0][${group}]`, this.form.groups[group]);
+      console.log(this.items, "items");
+      // Object.keys(this.form.groups).forEach(group => {
+      //   formData.append(`groups[0][${group}]`, this.form.groups[group]);
+      // });
+      Object.keys(this.form).forEach(formItem => {
+        formData.append(formItem, this.form[formItem]);
       });
       StoreData({
         reqName: `camps`,
@@ -107,9 +136,7 @@ export default {
           // this.available_teams.push(res.data.camp_team);
         })
         .catch(() => {})
-        .finally(() => {
-          this.reset();
-        });
+        .finally(() => {});
     }
   },
   validations: {
@@ -132,13 +159,28 @@ export default {
       registration_start_date: {
         required
       },
-      camp_location: {
+      no_of_days: {
         required
       },
-      groups: {
-        classification_id: {
-          required
-        }
+      location_id: {
+        required
+      }
+    },
+    groups: {
+      classification_id: {
+        required
+      },
+      min_grade_id: {
+        required
+      },
+      max_grade_id: {
+        required
+      },
+      teams: {
+        required
+      },
+      teams_per_group: {
+        required
       }
     }
   }

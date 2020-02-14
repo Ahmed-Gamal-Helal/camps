@@ -22,7 +22,6 @@
         :headers="headers"
         :items="camps"
         :mobile-breakpoint="zero"
-        hide-default-footer
         class="table"
       >
         <template v-slot:item="camp">

@@ -33,13 +33,14 @@
     "classification_id": "Classification",
     "group_id": "Group",
     "gender": "Gender",
-    "camp_theme": "Camp Theme",
+    "theme": "Camp Theme",
     "short_name": "Short Name",
-    "camp_type": "Camp Type",
-    "camp_sub_type": "Camp Sub Type",
-    "number_of_days": "Number Of Days",
-    "min_grade": "Min Grade",
-    "max_grade": "Max Grade"
+    "type_id": "Camp Type",
+    "sub_type_id": "Camp Sub Type",
+    "no_of_days": "Number Of Days",
+    "min_grade_id": "Min Grade",
+    "max_grade_id": "Max Grade",
+    "location_id": "Camp Location"
   },
   "validation": {
     "required": "%{attribute} is required",

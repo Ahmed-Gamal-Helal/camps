@@ -19,13 +19,13 @@
         </form-group>
       </v-col>
       <v-col class="py-2" cols="12" md="6">
-        <form-group name="camp_theme" :attribute="`fields.camp_theme`">
+        <form-group name="theme" :attribute="`fields.theme`">
           <template slot-scope="{ attrs, listeners }">
             <v-text-field
               v-bind="attrs"
               v-on="listeners"
               regular
-              v-model.trim="form.camp_theme"
+              v-model.trim="form.theme"
               type="text"
             >
             </v-text-field>
@@ -47,7 +47,7 @@
         </form-group>
       </v-col>
       <v-col class="py-2" cols="12" md="6">
-        <form-group name="camp_type" attribute="fields.camp_type">
+        <form-group name="type_id" attribute="fields.type_id">
           <template slot-scope="{ attrs, listeners }">
             <v-select
               :loading="loadingData"
@@ -58,13 +58,13 @@
               clearable
               v-bind="attrs"
               v-on="listeners"
-              v-model="form.camp_type"
+              v-model="form.type_id"
             ></v-select>
           </template>
         </form-group>
       </v-col>
       <v-col class="py-2" cols="12" md="6">
-        <form-group name="camp_sub_type" attribute="fields.camp_sub_type">
+        <form-group name="sub_type_id" attribute="fields.sub_type_id">
           <template slot-scope="{ attrs, listeners }">
             <v-select
               :loading="loadingData"
@@ -75,59 +75,44 @@
               clearable
               v-bind="attrs"
               v-on="listeners"
-              v-model="form.camp_sub_type"
-              :disabled="!form.camp_type"
+              v-model="form.sub_type_id"
+              :disabled="!form.type_id"
             ></v-select>
           </template>
         </form-group>
       </v-col>
-      <!-- <v-col class="py-2" cols="12" md="6">
-            <form-group name="camp_location" attribute="fields.camp_location">
-              <template slot-scope="{ attrs, listeners }">
-                <v-select
-                  :loading="loadingData"
-                  :items="campLocations"
-                  item-text="name"
-                  item-value="id"
-                  regular
-                  clearable
-                  v-bind="attrs"
-                  v-on="listeners"
-                  v-model="form.camp_location"
-                ></v-select>
-              </template>
-            </form-group>
-          </v-col> -->
       <!-- Date & Time -->
       <v-col class="py-2" cols="12" md="6">
         <v-dialog
           ref="registerationDialog"
-          v-model="registeration_start_modal"
-          :return-value.sync="form.registeration_start"
+          v-model="registration_start_date_modal"
+          :return-value.sync="form.registration_start_date"
           persistent
           width="290px"
         >
           <template v-slot:activator="{ on }">
             <v-text-field
-              v-model="form.registeration_start"
+              v-model="form.registration_start_date"
               label="Registration Start"
               readonly
               clearable
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="form.registeration_start" scrollable>
+          <v-date-picker v-model="form.registration_start_date" scrollable>
             <v-spacer></v-spacer>
             <v-btn
               text
               color="primary"
-              @click="registeration_start_modal = false"
+              @click="registration_start_date_modal = false"
               >Cancel</v-btn
             >
             <v-btn
               text
               color="primary"
-              @click="$refs.registerationDialog.save(form.registeration_start)"
+              @click="
+                $refs.registerationDialog.save(form.registration_start_date)
+              "
               >OK</v-btn
             >
           </v-date-picker>
@@ -136,29 +121,32 @@
       <v-col class="py-2" cols="12" md="6">
         <v-dialog
           ref="closingDate"
-          v-model="closing_date_modal"
-          :return-value.sync="form.closing_date"
+          v-model="registration_end_date_modal"
+          :return-value.sync="form.registration_end_date"
           persistent
           width="290px"
         >
           <template v-slot:activator="{ on }">
             <v-text-field
-              v-model="form.closing_date"
+              v-model="form.registration_end_date"
               label="Closing Date"
               readonly
               clearable
               v-on="on"
             ></v-text-field>
           </template>
-          <v-date-picker v-model="form.closing_date" scrollable>
+          <v-date-picker v-model="form.registration_end_date" scrollable>
             <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="closing_date_modal = false"
+            <v-btn
+              text
+              color="primary"
+              @click="registration_end_date_modal = false"
               >Cancel</v-btn
             >
             <v-btn
               text
               color="primary"
-              @click="$refs.closingDate.save(form.closing_date)"
+              @click="$refs.closingDate.save(form.registration_end_date)"
               >OK</v-btn
             >
           </v-date-picker>
@@ -299,16 +287,33 @@
         </v-dialog>
       </v-col>
       <v-col class="py-2" cols="12" md="6">
-        <form-group name="number_of_days" :attribute="`fields.number_of_days`">
+        <form-group name="no_of_days" :attribute="`fields.no_of_days`">
           <template slot-scope="{ attrs, listeners }">
             <v-text-field
               v-bind="attrs"
               v-on="listeners"
               regular
-              v-model.trim="form.number_of_days"
+              v-model.trim="form.no_of_days"
               type="number"
             >
             </v-text-field>
+          </template>
+        </form-group>
+      </v-col>
+      <v-col class="py-2" cols="12" md="6">
+        <form-group name="location_id" attribute="fields.location_id">
+          <template slot-scope="{ attrs, listeners }">
+            <v-select
+              :loading="loadingData"
+              :items="camp_locations"
+              item-text="start_point"
+              item-value="id"
+              regular
+              clearable
+              v-bind="attrs"
+              v-on="listeners"
+              v-model="form.location_id"
+            ></v-select>
           </template>
         </form-group>
       </v-col>
@@ -345,10 +350,10 @@ export default {
   data() {
     return {
       camp_types: [],
-      registeration_start: "",
-      registeration_start_modal: false,
-      closing_date: "",
-      closing_date_modal: false,
+      camp_locations: [],
+      registration_start_date_modal: false,
+      registration_end_date: "",
+      registration_end_date_modal: false,
       start_date: "",
       start_date_modal: false,
       end_date: "",
@@ -362,33 +367,19 @@ export default {
   },
   computed: {
     campSubTypes() {
-      const camp_type = this.form.camp_type;
+      const type_id = this.form.type_id;
       let camp_sub_types = [];
       this.camp_types.find(item => {
-        if (item.id === camp_type) {
+        if (item.id === type_id) {
           camp_sub_types = item.camp_sub_types;
         }
       });
       return camp_sub_types;
-    },
-    campLocations() {
-      // const camp_location = this.form.location_id;
-      let campLocations = [];
-      this.campSubTypes.map(location => {
-        if (location.id === this.form.location_id) {
-          campLocations = location;
-        }
-      });
-      console.log(
-        this.campSubTypes.map(el => {
-          return el.locations;
-        })
-      );
-      return campLocations;
     }
   },
   created() {
     this.indexCampTypes();
+    this.indexLocations();
   },
   methods: {
     indexCampTypes() {
@@ -399,6 +390,15 @@ export default {
           this.camp_sub_types = data.map((el, index) => {
             return el.camp_sub_types[index];
           });
+        })
+        .catch(() => {})
+        .finally(() => {});
+    },
+    indexLocations() {
+      IndexData({ reqName: `/bus-locations` })
+        .then(res => {
+          const { data } = res.data;
+          this.camp_locations = data;
         })
         .catch(() => {})
         .finally(() => {});

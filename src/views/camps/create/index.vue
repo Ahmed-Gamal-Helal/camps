@@ -11,19 +11,23 @@
             <form @submit.prevent="handleSave" class="form-box">
               <basic-info-form :v="$v" :form="form" />
               <hr class="my-12" />
-              <age-groups :v="$v" :form="form" />
+              <age-groups
+                :v="$v"
+                :form="form"
+                @handle_table_data="handleTableData"
+              />
               <hr class="my-12" />
-
               <camp-prices :form="form" />
-              <!-- <v-btn
+              <hr class="my-12" />
+              <v-btn
                 class="success text-capitalize"
                 large
                 type="submit"
                 width="30%"
-                :disabled="$v.form.$invalid"
               >
-                ><span>Add New Camp</span></v-btn
-              > -->
+                <!-- :disabled="$v.form.$invalid" -->
+                <span>Save</span></v-btn
+              >
             </form>
           </formWrapper>
         </v-col>
@@ -33,6 +37,12 @@
 </template>
 
 <script>
+import {
+  // IndexData,
+  StoreData
+  // ShowData,
+  // UpdateData
+} from "@/helpers/apiMethods";
 import { required } from "vuelidate/lib/validators";
 
 export default {
@@ -40,23 +50,32 @@ export default {
     return {
       form: {
         name: "",
-        camp_theme: "",
+        theme: "",
         short_name: "",
-        camp_type: "",
-        camp_sub_type: "",
+        type_id: "",
+        sub_type_id: "",
+        registration_start_date: "",
+        registration_end_date: "",
         location_id: "",
-        registeration_start: "",
-        closing_date: "",
         start_date: "",
         end_date: "",
         arrival_time: "",
         departure_time: "",
-        number_of_days: "",
+        no_of_days: "",
         // Age Group
-        classification_id: "",
-        min_grade: "",
-        spots_per_team: ""
-      }
+        groups: {
+          classification_id: "",
+          min_grade_id: "",
+          max_grade_id: "",
+          min_age: 0,
+          max_age: 0,
+          teams: 0,
+          teams_per_group: 0,
+          spots_per_team: 0
+        },
+        price: 0
+      },
+      items: []
     };
   },
   components: {
@@ -65,11 +84,32 @@ export default {
     CampPrices: () => import("./components/CampPrices")
   },
   methods: {
+    handleTableData(data) {
+      this.items = data;
+    },
     handleSave() {
       this.createTeam();
     },
     createTeam() {
-      console.log("x");
+      const formData = new FormData();
+      this.items.forEach(item => {
+        console.log(item, "x");
+      });
+      Object.keys(this.form.groups).forEach(group => {
+        formData.append(`groups[0][${group}]`, this.form.groups[group]);
+      });
+      StoreData({
+        reqName: `camps`,
+        data: formData
+      })
+        .then(res => {
+          console.log(res);
+          // this.available_teams.push(res.data.camp_team);
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.reset();
+        });
     }
   },
   validations: {
@@ -80,20 +120,25 @@ export default {
       short_name: {
         required
       },
-      camp_theme: {
+      theme: {
         required
       },
-      camp_type: {
+      type_id: {
         required
       },
-      camp_sub_type: {
+      sub_type_id: {
+        required
+      },
+      registration_start_date: {
         required
       },
       camp_location: {
         required
       },
-      classification_id: {
-        required
+      groups: {
+        classification_id: {
+          required
+        }
       }
     }
   }

@@ -36,7 +36,7 @@
           link
         >
           <v-list-item-content>
-            <v-list-item-link>{{ item.title }}</v-list-item-link>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -91,7 +91,7 @@ export default {
     group: null,
     items: [
       { title: "Camps", link: "/camps" },
-      { title: "CRM", link: "/" }
+      { title: "CRM", link: "/crm" }
     ]
   }),
   methods: {

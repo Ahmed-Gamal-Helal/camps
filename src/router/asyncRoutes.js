@@ -31,28 +31,27 @@ export const asyncRouterMap = [
       }
     ]
   },
-  // {
-  //   path: "/members",
-  //   component: Layout,
-  //   redirect: "/members/list",
-  //   meta: {
-  //     title: "Members",
-  //     icon: "mdi-account-circle"
-  //   },
-  //   children: [
-  //     {
-  //       path: "list",
-  //       component: () => import("@/views/members/index"),
-  //       name: "MembersList",
-  //       // hidden: true,
-
-  //       meta: {
-  //         title: "members",
-  //         icon: "mdi-account-circle"
-  //       }
-  //     }
-  //   ]
-  // },
+  {
+    path: "/crm",
+    component: Layout,
+    redirect: "/crm/list",
+    meta: {
+      title: "crm",
+      icon: "mdi-account-circle"
+    },
+    children: [
+      {
+        path: "list",
+        component: () => import("@/views/crm/index"),
+        name: "crmList",
+        // hidden: true,
+        meta: {
+          title: "crm",
+          icon: "mdi-account-circle"
+        }
+      }
+    ]
+  },
   // {
   //   path: "/media",
   //   component: Layout,

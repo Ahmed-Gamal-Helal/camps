@@ -24,6 +24,22 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: "/crm",
+    component: Layout,
+    redirect: "/crm",
+    children: [
+      {
+        path: "/crm",
+        component: () => import("@/views/crm"),
+        name: "crm",
+        meta: {
+          icon: "mdi-view-dashboard",
+          title: "dashboard"
+        }
+      }
+    ]
+  },
+  {
     path: "/camps",
     component: Layout,
     redirect: "/camps",

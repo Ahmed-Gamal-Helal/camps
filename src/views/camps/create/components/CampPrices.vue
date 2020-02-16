@@ -31,7 +31,7 @@
           v-model="form.bus_price"
           :min="0"
           controls
-          :step="10"
+          :step="1"
         ></number-input>
       </v-col>
       <v-col sm="4" cols="12">
@@ -45,7 +45,7 @@
           v-model="form.meal_price"
           :min="0"
           controls
-          :step="10"
+          :step="1"
         ></number-input>
       </v-col>
       <v-col sm="4" cols="12">
@@ -59,7 +59,7 @@
           v-model="form.photos_price"
           :min="0"
           controls
-          :step="10"
+          :step="1"
         ></number-input>
       </v-col>
       <v-col sm="4" cols="12">
@@ -73,7 +73,7 @@
           v-model="form.early_check_in_price"
           :min="0"
           controls
-          :step="10"
+          :step="1"
         ></number-input>
       </v-col>
       <v-col sm="4" cols="12">
@@ -87,7 +87,7 @@
           v-model="form.late_check_out_price"
           :min="0"
           controls
-          :step="10"
+          :step="1"
         ></number-input>
       </v-col>
       <v-col sm="4" cols="12">
@@ -101,7 +101,7 @@
           v-model="form.special_needs_price"
           :min="0"
           controls
-          :step="10"
+          :step="1"
         ></number-input>
       </v-col>
     </v-row>

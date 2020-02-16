@@ -16,31 +16,44 @@
       </v-list>
     </v-navigation-drawer>-->
 
+    <v-navigation-drawer v-model="drawer" absolute temporary>
+      <!-- <v-list-item>
+        <v-img
+          :src="require('@/assets/imgs/logo.png')"
+          fluid
+          height="70px"
+          aspect-ratio="1"
+        ></v-img>
+      </v-list-item>
+
+      <v-divider></v-divider> -->
+
+      <v-list dense>
+        <v-list-item
+          v-for="item in items"
+          :key="item.title"
+          :to="item.link"
+          link
+        >
+          <v-list-item-content>
+            <v-list-item-link>{{ item.title }}</v-list-item-link>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
     <v-app-bar :clipped-left="$vuetify.breakpoint.lgAndUp" app light>
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
+      <v-toolbar-title class="ml-0 pl-4">
         <v-img
           :src="require('@/assets/imgs/logo.png')"
           fluid
           width="120px"
         ></v-img>
-        <!-- <span>{{ $t("heading.wsadmin") }}</span> -->
-        <!--class="hidden-sm-and-down" <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
       </v-toolbar-title>
-      <!-- <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="mdi-search"
-        label="Search"
-        class="hidden-sm-and-down"
-      ></v-text-field>-->
+      <v-btn icon large @click.stop="drawer = !drawer" title="menu">
+        <v-icon>mdi-menu</v-icon>
+      </v-btn>
       <div class="flex-grow-1"></div>
-      <!-- <v-btn icon>
-        <v-icon>mdi-apps</v-icon>
-      </v-btn>-->
-      <!-- <v-btn icon title="language">
-        <v-icon @click="handleChangeLanguage">mdi-earth</v-icon>
-      </v-btn>-->
       <v-btn icon large @click="logout" title="logout">
         <v-icon>mdi-logout</v-icon>
       </v-btn>
@@ -55,9 +68,6 @@
 
 <script>
 import cookie from "js-cookie";
-// import { mapGetters } from "vuex";
-// import SidebarItem from "./SideBarItem";
-
 export default {
   props: {
     source: String
@@ -73,30 +83,22 @@ export default {
         return false;
       }
     }
-    // ...mapGetters(["permission_routers"])
   },
   data: () => ({
     dialog: false,
-    drawer: null
+    // drawer: null,
+    drawer: false,
+    group: null,
+    items: [
+      { title: "Camps", link: "/camps" },
+      { title: "CRM", link: "/" }
+    ]
   }),
   methods: {
     logout() {
       this.$store.dispatch("LogOut").then(() => {
         location.reload(); // In order to re-instantiate the vue-router object to avoid bugs
       });
-    },
-    handleChangeLanguage() {
-      const lang = cookie.get("language");
-
-      if (lang === "ar") {
-        this.changeCookie("en");
-      } else {
-        this.changeCookie("ar");
-      }
-    },
-    changeCookie(lang) {
-      cookie.set("language", lang);
-      window.location.reload();
     }
   }
 };

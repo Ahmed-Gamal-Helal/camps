@@ -63,14 +63,7 @@ export default {
         arrival_time: "",
         departure_time: "",
         no_of_days: null,
-        price: 0,
-
-        bus_price: null,
-        meal_price: null,
-        photos_price: null,
-        early_check_in_price: null,
-        late_check_out_price: null,
-        special_needs_price: null
+        price: 0
       },
       // Age Group
       groups: {
@@ -132,6 +125,7 @@ export default {
         data: formData
       })
         .then(res => {
+          this.$route.push("/camps");
           console.log(res);
           // this.available_teams.push(res.data.camp_team);
         })

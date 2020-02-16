@@ -36,6 +36,10 @@
                     <span v-else>Male</span>
                   </td>
                   <td class="table__cell text-center">
+                    <span v-if="item.type === 'V'">Vida</span>
+                    <span v-else>Aqua</span>
+                  </td>
+                  <td class="table__cell text-center">
                     {{ item.remaining_spots + ` Spots` }}
                   </td>
                   <td class="table__cell text-center">
@@ -108,6 +112,10 @@
                   <td class="table__cell text-center">
                     <span v-if="team.item.gender === 'F'">Female</span>
                     <span v-else>Male</span>
+                  </td>
+                  <td class="table__cell text-center">
+                    <span v-if="item.type === 'V'">Vida</span>
+                    <span v-else>Aqua</span>
                   </td>
                   <td class="table__cell text-center">
                     {{ team.item.remaining_spots + ` Spots` }}
@@ -263,6 +271,7 @@ export default {
         "Team Name",
         "Age Group",
         "Gender",
+        "Type",
         "Remaining Spots",
         "Enabled",
         "Actions"

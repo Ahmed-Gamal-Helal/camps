@@ -1,18 +1,43 @@
 <template>
   <div>
-    <v-tabs v-model="model" centered slider-color="yellow">
-      <v-tab v-for="i in 3" :key="i" :href="`#tab-${i}`"> Item {{ i }} </v-tab>
+    <v-tabs v-model="tab" centered>
+      <v-tab v-for="item in items" :key="item.tab">
+        {{ item.tab }}
+      </v-tab>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>xd</v-card-text>
+        </v-card>
+      </v-tab-item>
+      <v-tab-item>
+        <start-call />
+      </v-tab-item>
+      <v-tab-item>
+        <v-card flat>
+          <v-card-text>sb</v-card-text>
+        </v-card>
+      </v-tab-item>
     </v-tabs>
+
+    <!-- <v-tabs-items v-model="tab">
+      <v-tab-item v-for="item in items" :key="item.tab">
+        <v-card flat>
+          <v-card-text>{{ item.content }}</v-card-text>
+        </v-card>
+      </v-tab-item>
+    </v-tabs-items> -->
   </div>
 </template>
 
 <script>
 export default {
+  components: {
+    StartCall: () => import("./components/StartCall")
+  },
   data() {
     return {
-      model: "tab-2",
-      text:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+      tab: null,
+      items: [{ tab: "Worklist" }, { tab: "Start Call" }, { tab: "Report" }]
     };
   }
 };

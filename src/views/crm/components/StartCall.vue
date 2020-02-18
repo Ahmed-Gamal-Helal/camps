@@ -2,15 +2,15 @@
   <div>
     <v-container class="fill-height h-80" fluid>
       <v-row align="center" justify="center">
-        <v-col sm="4" lg="3" class="mx-auto">
+        <!-- <v-col sm="4" lg="3" class="mx-auto">
           <v-img :src="require('@/assets/imgs/no_data/call.svg')"></v-img>
         </v-col>
         <v-col cols="12">
           <h2 class="text-center mt-5">
             Sarech by Phone Number , Account ID , Eamil
           </h2>
-        </v-col>
-        <v-col sm="6" class="mx-auto">
+        </v-col> -->
+        <v-col sm="12" class="mx-auto">
           <v-text-field
             outlined
             rounded
@@ -20,7 +20,18 @@
             append-icon="mdi-arrow-right"
             @click:append="toggleMarker"
           ></v-text-field>
-          {{ parentInfo }}
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col lg="5" md="6">
+          <family-info :parentInfo="parentInfo" :childrenInfo="childrenInfo" />
+          <!-- {{ parentInfo }} -->
+        </v-col>
+        <v-col lg="7" md="6">
+          <h2>Tasks Area</h2>
+        </v-col>
+        <v-col lg="4" md="6">
+          <booked-camps :bookedCamps="bookedCamps" />
         </v-col>
       </v-row>
     </v-container>
@@ -31,10 +42,16 @@
 import { IndexData } from "@/helpers/apiMethods";
 
 export default {
+  components: {
+    FamilyInfo: () => import("./sub/FamilyInfo"),
+    BookedCamps: () => import("./sub/BookedCamps")
+  },
   data() {
     return {
       search: null,
-      parentInfo: []
+      parentInfo: [],
+      childrenInfo: [],
+      bookedCamps: []
     };
   },
   methods: {
@@ -46,7 +63,9 @@ export default {
         query: { search: this.search }
       })
         .then(res => {
-          this.parentInfo = res.data;
+          this.parentInfo = res.data.parents;
+          this.childrenInfo = res.data.children;
+          this.bookedCamps = res.data.booked_camps;
         })
         .catch(() => {});
     }

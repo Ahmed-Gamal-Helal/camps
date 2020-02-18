@@ -54,8 +54,8 @@
   width: 1px;
 }
 
-td {
-  text-align: center;
+.blue-name {
+  color: $primary;
 }
 
 .v-avatar.square {
@@ -64,4 +64,20 @@ td {
   img {
     padding: 0.33rem;
   }
+}
+
+.icon-active {
+  font-size: $size-20;
+  color: $color-active;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #060e49;
+  border-radius: 20px;
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }

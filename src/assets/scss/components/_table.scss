@@ -63,3 +63,14 @@
 .v-expansion-panel::before {
   box-shadow: none !important;
 }
+.booked-camps {
+  max-height: 400px;
+  overflow-y: overlay;
+  thead {
+    background-color: $color-bg;
+    th {
+      color: $color-th;
+      font-weight: bold;
+    }
+  }
+}

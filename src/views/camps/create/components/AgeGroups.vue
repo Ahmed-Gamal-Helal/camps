@@ -15,20 +15,22 @@
           color="success"
           :disabled="addButtonCheck()"
         >
-          <span class="mx-2">Add</span>
+          <i class="icon-add"></i>
+          <span class="mx-2">Add Age Group</span>
         </v-btn>
       </v-toolbar-items>
     </v-toolbar>
     <v-row>
       <v-col md="4" sm="6" cols="12">
+        <!-- :validator="v.groups.classification_id" -->
         <form-group
           name="classification_id"
           attribute="fields.classification_id"
         >
           <template slot-scope="{ attrs, listeners }">
             <v-select
-              :items="classifications"
               @change="teamSpots"
+              :items="classifications"
               item-text="name"
               item-value="id"
               regular
@@ -41,6 +43,7 @@
         </form-group>
       </v-col>
       <v-col md="4" sm="6" cols="12">
+        <!-- :validator="v.groups.min_grade_id" -->
         <form-group name="min_grade_id" attribute="fields.min_grade_id">
           <template slot-scope="{ attrs, listeners }">
             <v-select
@@ -53,12 +56,12 @@
               v-bind="attrs"
               v-on="listeners"
               v-model="groups.min_grade_id"
-              :disabled="dimmedActions"
             ></v-select>
           </template>
         </form-group>
       </v-col>
       <v-col md="4" sm="6" cols="12">
+        <!-- :validator="v.groups.max_grade_id" -->
         <form-group name="max_grade_id" attribute="fields.max_grade_id">
           <template slot-scope="{ attrs, listeners }">
             <v-select
@@ -71,7 +74,6 @@
               v-bind="attrs"
               v-on="listeners"
               v-model="groups.max_grade_id"
-              :disabled="dimmedActions"
             ></v-select>
           </template>
         </form-group>
@@ -85,7 +87,6 @@
             :min="1"
             controls
             :step="0.1"
-            :disabled="dimmedActions"
           ></number-input>
         </section>
       </v-col>
@@ -98,7 +99,6 @@
             :min="1"
             controls
             :step="0.1"
-            :disabled="dimmedActions"
           ></number-input>
         </section>
       </v-col>
@@ -190,6 +190,10 @@ export default {
     groups: {
       type: Object,
       default: () => {}
+    },
+    v: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -206,6 +210,28 @@ export default {
   created() {
     this.indexClassifications();
     this.createTableHeaders();
+  },
+  computed: {
+    minGradeValues() {
+      const classification_id = this.groups.classification_id;
+      let min_grade = [];
+      this.classifications.find(item => {
+        if (item.id === classification_id) {
+          min_grade = item.min_grade;
+        }
+      });
+      return min_grade;
+    },
+    maxGradeValues() {
+      const classification_id = this.groups.classification_id;
+      let max_grade = [];
+      this.classifications.find(item => {
+        if (item.id === classification_id) {
+          max_grade = item.max_grade;
+        }
+      });
+      return max_grade;
+    }
   },
   methods: {
     indexClassifications() {
@@ -246,7 +272,7 @@ export default {
       });
     },
     addButtonCheck() {
-      if (this.groups.classification_id === "") {
+      if (this.groups.classification_id === null) {
         return true;
       } else {
         return false;
@@ -283,17 +309,15 @@ export default {
       console.log("xx");
     },
     reset() {
-      this.groups.classification_id = "";
-      this.groups.teams_per_group = "";
-      this.groups.spots_per_team = "";
-      this.groups.teams = "";
-      this.groups.min_age = "";
-      this.groups.max_age = "";
-      this.groups.min_grade_id = "";
-      this.groups.max_grade_id = "";
+      this.groups.classification_id = null;
+      this.groups.teams_per_group = null;
+      this.groups.spots_per_team = null;
+      this.groups.teams = null;
+      this.groups.min_age = null;
+      this.groups.max_age = null;
+      this.groups.min_grade_id = null;
+      this.groups.max_grade_id = null;
     }
   }
 };
 </script>
-
-<style lang="scss" scoped></style>

@@ -82,7 +82,7 @@
         </form-group>
       </v-col>
       <!-- Date & Time -->
-      <v-col class="py-2" cols="12" md="6">
+      <v-col class="py-2 dates" cols="12" md="6">
         <v-dialog
           ref="registerationDialog"
           v-model="registration_start_date_modal"
@@ -97,6 +97,7 @@
               readonly
               clearable
               v-on="on"
+              append-icon="icon-calendar"
             ></v-text-field>
           </template>
           <v-date-picker v-model="form.registration_start_date" scrollable>
@@ -118,7 +119,7 @@
           </v-date-picker>
         </v-dialog>
       </v-col>
-      <v-col class="py-2" cols="12" md="6">
+      <v-col class="py-2 dates" cols="12" md="6">
         <v-dialog
           ref="closingDate"
           v-model="registration_end_date_modal"
@@ -133,6 +134,7 @@
               readonly
               clearable
               v-on="on"
+              append-icon="icon-calendar"
             ></v-text-field>
           </template>
           <v-date-picker v-model="form.registration_end_date" scrollable>
@@ -152,7 +154,7 @@
           </v-date-picker>
         </v-dialog>
       </v-col>
-      <v-col class="py-2" cols="12" md="6">
+      <v-col class="py-2 dates" cols="12" md="6">
         <v-dialog
           ref="startDate"
           v-model="start_date_modal"
@@ -167,6 +169,7 @@
               readonly
               clearable
               v-on="on"
+              append-icon="icon-calendar"
             ></v-text-field>
           </template>
           <v-date-picker v-model="form.start_date" scrollable>
@@ -183,7 +186,7 @@
           </v-date-picker>
         </v-dialog>
       </v-col>
-      <v-col class="py-2" cols="12" md="6">
+      <v-col class="py-2 dates" cols="12" md="6">
         <v-dialog
           ref="endDate"
           v-model="end_date_modal"
@@ -198,6 +201,7 @@
               readonly
               clearable
               v-on="on"
+              append-icon="icon-calendar"
             ></v-text-field>
           </template>
           <v-date-picker v-model="form.end_date" scrollable>
@@ -214,7 +218,7 @@
           </v-date-picker>
         </v-dialog>
       </v-col>
-      <v-col class="py-2" cols="12" md="6">
+      <v-col class="py-2 dates" cols="12" md="6">
         <v-dialog
           ref="arrivalDialog"
           v-model="arrival_time_dialog"
@@ -230,6 +234,7 @@
               readonly
               clearable
               v-on="on"
+              append-icon="mdi-clock-outline"
             ></v-text-field>
           </template>
           <v-time-picker
@@ -250,7 +255,7 @@
           </v-time-picker>
         </v-dialog>
       </v-col>
-      <v-col class="py-2" cols="12" md="6">
+      <v-col class="py-2 dates" cols="12" md="6">
         <v-dialog
           ref="departureDialog"
           v-model="departure_time_dialog"
@@ -266,6 +271,7 @@
               readonly
               clearable
               v-on="on"
+              append-icon="mdi-clock-outline"
             ></v-text-field>
           </template>
           <v-time-picker
@@ -306,7 +312,7 @@
             <v-select
               :loading="loadingData"
               :items="camp_locations"
-              item-text="start_point"
+              item-text="location"
               item-value="id"
               regular
               clearable
@@ -395,7 +401,7 @@ export default {
         .finally(() => {});
     },
     indexLocations() {
-      IndexData({ reqName: `/bus-locations` })
+      IndexData({ reqName: `/locations` })
         .then(res => {
           const { data } = res.data;
           this.camp_locations = data;

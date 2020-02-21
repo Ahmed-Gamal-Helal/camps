@@ -26,6 +26,8 @@
     "name": "Name",
     "short_description": "Short Description",
     "description": "Description",
+    "comments": "Comments",
+    "discounts": "Discounts",
     "address": "Address",
     "speakers": "Speakers",
     "url": "URL",

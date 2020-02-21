@@ -18,8 +18,22 @@
                 @handle_table_data="handleTableData"
               />
               <hr class="my-12" />
-              <camp-prices :form="form" />
-              <!-- <hr class="my-12" /> -->
+              <camp-prices :form="form" :disountForm="disountForm" />
+              <hr class="my-12" />
+              <majors />
+              <hr class="my-12" />
+              <bus-stops />
+              <hr class="my-12" />
+              <camp-description :form="form" />
+              <hr class="my-12" />
+              <section class="transparent-field">
+                <v-switch
+                  v-model="form.available"
+                  inset
+                  label="Show Camp"
+                  color="success"
+                ></v-switch>
+              </section>
               <v-btn
                 class="success text-capitalize"
                 large
@@ -44,7 +58,7 @@ import {
   // ShowData,
   // UpdateData
 } from "@/helpers/apiMethods";
-import { required } from "vuelidate/lib/validators";
+import { required, maxLength } from "vuelidate/lib/validators";
 
 export default {
   data() {
@@ -64,25 +78,32 @@ export default {
         departure_time: "",
         no_of_days: null,
         price: 0
+        // discounts: []
       },
       // Age Group
       groups: {
-        classification_id: "",
-        min_grade_id: "",
-        max_grade_id: "",
+        classification_id: null,
+        min_grade_id: null,
+        max_grade_id: null,
         min_age: 0,
         max_age: 0,
         teams: null,
         teams_per_group: null,
         spots_per_team: 0
       },
-      items: []
+      items: [],
+      disountForm: {
+        discounts: []
+      }
     };
   },
   components: {
     BasicInfoForm: () => import("./components/BasicInfo"),
     AgeGroups: () => import("./components/AgeGroups"),
-    CampPrices: () => import("./components/CampPrices")
+    CampPrices: () => import("./components/CampPrices"),
+    CampDescription: () => import("./components/Description"),
+    Majors: () => import("./components/Majors"),
+    BusStops: () => import("./components/BusStops")
   },
   methods: {
     handleTableData(data) {
@@ -113,13 +134,20 @@ export default {
           }
         });
       });
-      console.log(this.items, "items");
       // Object.keys(this.form.groups).forEach(group => {
       //   formData.append(`groups[0][${group}]`, this.form.groups[group]);
       // });
       Object.keys(this.form).forEach(formItem => {
         formData.append(formItem, this.form[formItem]);
       });
+      if (this.disountForm.discounts.length) {
+        Object.keys(this.disountForm.discounts).forEach((discount, index) => {
+          formData.append(
+            `discounts[${index}]`,
+            this.disountForm.discounts[discount]
+          );
+        });
+      }
       StoreData({
         reqName: `camps`,
         data: formData
@@ -158,6 +186,12 @@ export default {
       },
       location_id: {
         required
+      },
+      description: {
+        maxLength: maxLength(20000)
+      },
+      comments: {
+        maxLength: maxLength(20000)
       }
     },
     groups: {

@@ -14,7 +14,7 @@
           <v-text-field
             outlined
             rounded
-            v-model="search"
+            v-model="mobile"
             placeholder="01275017516"
             prepend-inner-icon="mdi-magnify"
             append-icon="mdi-arrow-right"
@@ -28,10 +28,13 @@
           <!-- {{ parentInfo }} -->
         </v-col>
         <v-col lg="7" md="6">
-          <h2>Tasks Area</h2>
+          <tasks :tasks="tasks" />
         </v-col>
         <v-col lg="4" md="6">
           <booked-camps :bookedCamps="bookedCamps" />
+        </v-col>
+        <v-col lg="8" md="6">
+          <interactions :interactions="interactions" />
         </v-col>
       </v-row>
     </v-container>
@@ -44,14 +47,18 @@ import { IndexData } from "@/helpers/apiMethods";
 export default {
   components: {
     FamilyInfo: () => import("./sub/FamilyInfo"),
-    BookedCamps: () => import("./sub/BookedCamps")
+    BookedCamps: () => import("./sub/BookedCamps"),
+    Tasks: () => import("./sub/Tasks"),
+    Interactions: () => import("./sub/Interactions")
   },
   data() {
     return {
-      search: null,
+      mobile: null,
       parentInfo: [],
       childrenInfo: [],
-      bookedCamps: []
+      bookedCamps: [],
+      tasks: [],
+      interactions: []
     };
   },
   methods: {
@@ -59,13 +66,17 @@ export default {
       const query = this.query;
       this.$router.push({ query });
       IndexData({
-        reqName: `/crm/get-account-details?z`,
-        query: { search: this.search }
+        reqName: `/crm/customers?a`,
+        query: { mobile: this.mobile }
       })
         .then(res => {
-          this.parentInfo = res.data.parents;
-          this.childrenInfo = res.data.children;
-          this.bookedCamps = res.data.booked_camps;
+          const { customer } = res.data;
+          console.log(customer);
+
+          this.parentInfo = customer.account.parents;
+          this.childrenInfo = customer.account.children;
+          this.bookedCamps = customer.account.booked_camps;
+          this.interactions = customer.related_interactions;
         })
         .catch(() => {});
     }
@@ -73,8 +84,8 @@ export default {
   computed: {
     query() {
       const query = {};
-      if (this.search) {
-        query.search = this.search;
+      if (this.mobile) {
+        query.mobile = this.mobile;
       }
       return query;
     }
@@ -83,7 +94,7 @@ export default {
     $route: {
       immediate: true,
       handler({ query }) {
-        this.search = query.search;
+        this.mobile = query.mobile;
       }
     }
   }

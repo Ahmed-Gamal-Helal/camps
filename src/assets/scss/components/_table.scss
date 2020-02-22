@@ -63,7 +63,7 @@
 .v-expansion-panel::before {
   box-shadow: none !important;
 }
-.booked-camps {
+.booked-camps, .interactions {
   max-height: 400px;
   overflow-y: overlay;
   thead {

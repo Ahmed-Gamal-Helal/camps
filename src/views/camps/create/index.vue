@@ -84,8 +84,14 @@ export default {
       // Age Group
       groups: {
         classification_id: null,
-        min_grade_id: null,
-        max_grade_id: null,
+        min_grade_id: {
+          name: "",
+          id: ""
+        },
+        max_grade_id: {
+          name: "",
+          id: ""
+        },
         min_age: 0,
         max_age: 0,
         teams: null,
@@ -112,16 +118,22 @@ export default {
   methods: {
     reset() {
       this.groups = {
-        classification_id: null,
-        min_grade_id: null,
-        max_grade_id: null,
+        classification_id: "",
+        min_grade_id: {
+          name: "",
+          id: ""
+        },
+        max_grade_id: {
+          name: "",
+          id: ""
+        },
         min_age: 0,
         max_age: 0,
-        teams: null,
-        teams_per_group: null,
+        teams: "",
+        teams_per_group: "",
         spots_per_team: 0
       };
-      this.$v.reset();
+      this.$v.groups.reset();
     },
     handleTableData(data) {
       this.items = data;

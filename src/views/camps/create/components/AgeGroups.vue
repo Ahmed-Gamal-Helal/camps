@@ -54,7 +54,7 @@
               clearable
               v-bind="attrs"
               v-on="listeners"
-              v-model="groups.min_grade_id"
+              v-model="groups.min_grade_id.id"
             ></v-select>
           </template>
         </form-group>
@@ -71,7 +71,7 @@
               clearable
               v-bind="attrs"
               v-on="listeners"
-              v-model="groups.max_grade_id"
+              v-model="groups.max_grade_id.id"
             ></v-select>
           </template>
         </form-group>
@@ -261,8 +261,8 @@ export default {
           this.groups.spots_per_team = item.spots_per_team;
           this.groups.min_age = item.min_age;
           this.groups.max_age = item.max_age;
-          this.groups.min_grade_id = item.min_grade.id;
-          this.groups.max_grade_id = item.max_grade.id;
+          this.groups.min_grade_id = item.min_grade;
+          this.groups.max_grade_id = item.max_grade;
 
           if (item.name !== "Other") {
             this.dimmedActions = true;

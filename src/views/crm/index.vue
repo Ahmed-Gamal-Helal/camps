@@ -5,9 +5,7 @@
         {{ item.tab }}
       </v-tab>
       <v-tab-item>
-        <v-card flat>
-          <v-card-text>xd</v-card-text>
-        </v-card>
+        <work-list />
       </v-tab-item>
       <v-tab-item>
         <start-call />
@@ -32,7 +30,8 @@
 <script>
 export default {
   components: {
-    StartCall: () => import("./components/StartCall")
+    StartCall: () => import("./components/StartCall"),
+    WorkList: () => import("./components/WorkList")
   },
   data() {
     return {

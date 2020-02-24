@@ -50,7 +50,6 @@
               :items="minGrade"
               item-text="name"
               item-value="id"
-              return-object
               regular
               clearable
               v-bind="attrs"
@@ -68,7 +67,6 @@
               :items="maxGrade"
               item-text="name"
               item-value="id"
-              return-object
               regular
               clearable
               v-bind="attrs"
@@ -150,7 +148,7 @@
           <tr>
             <td class="text-sm-center">{{ item.name }}</td>
             <td class="text-sm-center">{{ item.min_grade.name }}</td>
-            <td class="text-sm-center">{{ item.min_grade.name }}</td>
+            <td class="text-sm-center">{{ item.max_grade.name }}</td>
             <td class="text-sm-center">{{ item.min_age }}</td>
             <td class="text-sm-center">{{ item.max_age }}</td>
             <td class="text-sm-center">{{ item.teams }}</td>
@@ -210,6 +208,7 @@ export default {
   created() {
     this.indexClassifications();
     this.createTableHeaders();
+    this.indexGrades();
   },
   computed: {
     minGradeValues() {
@@ -244,8 +243,19 @@ export default {
         .catch(() => {})
         .finally(() => {});
     },
+    indexGrades() {
+      IndexData({ reqName: "grades" })
+        .then(res => {
+          // console.log(res.data);
+          const { data } = res.data;
+          this.minGrade = data;
+          this.maxGrade = data;
+        })
+        .catch(() => {})
+        .finally(() => {});
+    },
     teamSpots() {
-      const { classification_id } = this.groups;
+      const classification_id = this.groups.classification_id;
       this.classifications.forEach(item => {
         if (item.id === classification_id) {
           this.groups.spots_per_team = item.spots_per_team;
@@ -253,23 +263,28 @@ export default {
           this.groups.max_age = item.max_age;
           this.groups.min_grade_id = item.min_grade.id;
           this.groups.max_grade_id = item.max_grade.id;
-          const { name, id } = item.min_grade;
+          // const { name, id } = item.min_grade;
           if (item.name !== "Other") {
             this.dimmedActions = true;
           } else {
             this.dimmedActions = false;
           }
-          this.minGrade = [{ name, id }];
-          this.maxGrade = [
-            { id: item.max_grade.id, name: item.max_grade.name }
-          ];
-          this.detailed_classification = { ...item };
+          // this.minGrade = [{ name, id }];
+          // this.maxGrade = [
+          //   { id: item.max_grade.id, name: item.max_grade.name }
+          // ];
+          // this.detailed_classification = { ...item };
+          // console.log(item);
+
           this.detailed_classification = {
-            ...this.detailed_classification,
+            ...item,
             ...this.groups
           };
         }
       });
+    },
+    minGradeChange() {
+      this.groups.min_grade_id = this.groups.min_grade_id;
     },
     addButtonCheck() {
       if (this.groups.classification_id === null) {
@@ -292,11 +307,16 @@ export default {
       this.groupsHeaders = TableHeaders(headersList);
     },
     addGroup() {
-      // const group = { ...this.groups };
+      // remove id selected from array
       this.classifications = this.classifications.filter(
         item => item.id !== this.detailed_classification.id
       );
-      this.groupsAdded.push(this.detailed_classification);
+
+      console.log(this.detailed_classification, "detailed_classification");
+
+      this.groupsAdded.push({ ...this.detailed_classification });
+      console.log(this.groupsAdded, "groupsAdded");
+
       this.$emit("handle_table_data", this.groupsAdded);
       this.reset();
 
@@ -317,6 +337,7 @@ export default {
       this.groups.max_age = null;
       this.groups.min_grade_id = null;
       this.groups.max_grade_id = null;
+      this.v = {};
     }
   }
 };

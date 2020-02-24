@@ -22,7 +22,7 @@
               <hr class="my-12" />
               <majors />
               <hr class="my-12" />
-              <bus-stops />
+              <bus-stops :buses="buses" />
               <hr class="my-12" />
               <camp-description :form="form" />
               <hr class="my-12" />
@@ -94,6 +94,9 @@ export default {
       items: [],
       disountForm: {
         discounts: []
+      },
+      buses: {
+        bus_location: null
       }
     };
   },
@@ -108,6 +111,7 @@ export default {
   methods: {
     handleTableData(data) {
       this.items = data;
+      console.log(data);
     },
     handleSave() {
       this.createTeam();

@@ -42,7 +42,8 @@
     "no_of_days": "Number Of Days",
     "min_grade_id": "Min Grade",
     "max_grade_id": "Max Grade",
-    "location_id": "Camp Location"
+    "location_id": "Camp Location",
+    "bus_location": "Bus Location"
   },
   "validation": {
     "required": "%{attribute} is required",

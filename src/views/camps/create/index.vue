@@ -16,6 +16,7 @@
                 :form="form"
                 :groups="groups"
                 @handle_table_data="handleTableData"
+                @handle_reset_data="reset"
               />
               <hr class="my-12" />
               <camp-prices :form="form" :disountForm="disountForm" />
@@ -109,6 +110,19 @@ export default {
     BusStops: () => import("./components/BusStops")
   },
   methods: {
+    reset() {
+      this.groups = {
+        classification_id: null,
+        min_grade_id: null,
+        max_grade_id: null,
+        min_age: 0,
+        max_age: 0,
+        teams: null,
+        teams_per_group: null,
+        spots_per_team: 0
+      };
+      this.$v.reset();
+    },
     handleTableData(data) {
       this.items = data;
       console.log(data);

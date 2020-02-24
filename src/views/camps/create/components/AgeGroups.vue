@@ -263,7 +263,7 @@ export default {
           this.groups.max_age = item.max_age;
           this.groups.min_grade_id = item.min_grade.id;
           this.groups.max_grade_id = item.max_grade.id;
-          // const { name, id } = item.min_grade;
+
           if (item.name !== "Other") {
             this.dimmedActions = true;
           } else {
@@ -305,13 +305,16 @@ export default {
     },
     addGroup() {
       // remove id selected from array
-      // this.classifications = this.classifications.filter(
-      //   item => item.id !== this.detailed_classification.id
-      // );
 
       this.groupsAdded.push(this.groups);
 
       this.$emit("handle_table_data", this.groupsAdded);
+
+      this.classifications = this.classifications.filter(
+        item => item.id !== this.groups.classification_id
+      );
+      this.$emit("handle_reset_data");
+
       // this.reset();
 
       // group.name = this.classifications.filter(
@@ -321,18 +324,18 @@ export default {
     },
     handleDelete() {
       console.log("xx");
-    },
-    reset() {
-      this.groups.classification_id = null;
-      this.groups.teams_per_group = null;
-      this.groups.spots_per_team = null;
-      this.groups.teams = null;
-      this.groups.min_age = null;
-      this.groups.max_age = null;
-      this.groups.min_grade_id = null;
-      this.groups.max_grade_id = null;
-      this.v = {};
     }
+    // reset() {
+    //   this.groups.classification_id = null;
+    //   this.groups.teams_per_group = null;
+    //   this.groups.spots_per_team = null;
+    //   this.groups.teams = null;
+    //   this.groups.min_age = null;
+    //   this.groups.max_age = null;
+    //   this.groups.min_grade_id = null;
+    //   this.groups.max_grade_id = null;
+    //   this.v = {};
+    // }
   }
 };
 </script>

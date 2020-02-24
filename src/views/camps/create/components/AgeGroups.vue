@@ -146,9 +146,9 @@
       >
         <template v-slot:item="{ item }">
           <tr>
-            <td class="text-sm-center">{{ item.name }}</td>
+            <!-- <td class="text-sm-center">{{ item.name }}</td>
             <td class="text-sm-center">{{ item.min_grade.name }}</td>
-            <td class="text-sm-center">{{ item.max_grade.name }}</td>
+            <td class="text-sm-center">{{ item.max_grade.name }}</td> -->
             <td class="text-sm-center">{{ item.min_age }}</td>
             <td class="text-sm-center">{{ item.max_age }}</td>
             <td class="text-sm-center">{{ item.teams }}</td>
@@ -276,10 +276,7 @@ export default {
           // this.detailed_classification = { ...item };
           // console.log(item);
 
-          this.detailed_classification = {
-            ...item,
-            ...this.groups
-          };
+          // this.detailed_classification = { ...this.groups };
         }
       });
     },
@@ -308,17 +305,14 @@ export default {
     },
     addGroup() {
       // remove id selected from array
-      this.classifications = this.classifications.filter(
-        item => item.id !== this.detailed_classification.id
-      );
+      // this.classifications = this.classifications.filter(
+      //   item => item.id !== this.detailed_classification.id
+      // );
 
-      console.log(this.detailed_classification, "detailed_classification");
-
-      this.groupsAdded.push({ ...this.detailed_classification });
-      console.log(this.groupsAdded, "groupsAdded");
+      this.groupsAdded.push(this.groups);
 
       this.$emit("handle_table_data", this.groupsAdded);
-      this.reset();
+      // this.reset();
 
       // group.name = this.classifications.filter(
       //   el => el.id === group.classification_id

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-tabs v-model="tab" centered>
+    <v-tabs v-model="tab" centered @change="changeTab">
       <v-tab v-for="item in items" :key="item.index">
         {{ item }}
       </v-tab>
@@ -21,33 +21,40 @@ export default {
   },
   data() {
     return {
-      tab: null,
+      tab: 0,
       items: ["Worklist", "Start Call", "Report"],
       components: ["WorkList", "StartCall"]
     };
   },
+  created() {
+    // const tabParam = this.items[this.tab];
+    // this.$router.push(`/crm/?tab=${tabParam}`);
+  },
   methods: {
-    changeTab(tab) {
-      tab = tab.toLowerCase().replace(" ", "-");
-      this.$router.replace({
-        name: "crmDetails",
-        params: {
-          tab: tab
-        }
-      });
+    changeTab() {
+      console.log(this.items[this.tab]);
+      // tab = tab.toLowerCase().replace(" ", "-");
+      // this.$router.replace({
+      //   name: "crmDetails",
+      //   params: {
+      //     tab: tab
+      //   }
+      // });
+    }
+  },
+  watch: {
+    $route: {
+      handler(route) {
+        console.log(route);
+        console.log(this.items[this.tab]);
+
+        // let tab = route.params.tab;
+        // let index = this.components.indexOf(tab);
+        // this.tab = index;
+      },
+      immediate: true
     }
   }
-  // watch: {
-  //   $route: {
-  //     handler(route) {
-  //       console.log(route);
-  //       let tab = route.params.tab;
-  //       let index = this.components.indexOf(tab);
-  //       this.tab = index;
-  //     },
-  //     immediate: true
-  //   }
-  // }
 };
 </script>
 

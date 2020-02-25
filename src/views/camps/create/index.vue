@@ -133,7 +133,6 @@ export default {
         teams_per_group: "",
         spots_per_team: 0
       };
-      this.$v.groups.reset();
     },
     handleTableData(data) {
       this.items = data;
@@ -146,18 +145,18 @@ export default {
       const formData = new FormData();
       this.items.forEach((item, index) => {
         Object.keys(item).forEach(group => {
-          if (
-            group === "id" ||
-            group === "short_name" ||
-            group === "name" ||
-            group === "description" ||
-            group === "groups" ||
-            group === "min_grade" ||
-            group === "max_grade"
-          ) {
-            return;
-          }
-          if (group === "min_grade" || group === "max_grade") {
+          // if (
+          //   group === "id" ||
+          //   group === "short_name" ||
+          //   group === "name" ||
+          //   group === "description" ||
+          //   group === "groups" ||
+          //   group === "min_grade_id" ||
+          //   group === "max_grade_id"
+          // ) {
+          //   return;
+          // }
+          if (group === "min_grade_id" || group === "max_grade_id") {
             formData.append(`groups[${index}][${group}]`, item[group].id);
           } else {
             formData.append(`groups[${index}][${group}]`, item[group]);

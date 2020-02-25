@@ -146,9 +146,9 @@
       >
         <template v-slot:item="{ item }">
           <tr>
-            <!-- <td class="text-sm-center">{{ item.name }}</td>
-            <td class="text-sm-center">{{ item.min_grade.name }}</td>
-            <td class="text-sm-center">{{ item.max_grade.name }}</td> -->
+            <td class="text-sm-center">{{ item.name }}</td>
+            <td class="text-sm-center">{{ item.min_grade_id.name }}</td>
+            <td class="text-sm-center">{{ item.max_grade_id.name }}</td>
             <td class="text-sm-center">{{ item.min_age }}</td>
             <td class="text-sm-center">{{ item.max_age }}</td>
             <td class="text-sm-center">{{ item.teams }}</td>
@@ -258,6 +258,8 @@ export default {
       const classification_id = this.groups.classification_id;
       this.classifications.forEach(item => {
         if (item.id === classification_id) {
+          console.log(item);
+          this.groups.name = item.name;
           this.groups.spots_per_team = item.spots_per_team;
           this.groups.min_age = item.min_age;
           this.groups.max_age = item.max_age;

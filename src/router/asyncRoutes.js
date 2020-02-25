@@ -52,7 +52,7 @@ export const asyncRouterMap = [
       },
       {
         path: "/crm/:tab",
-        component: () => import("@/views/crm/detailed-components"),
+        component: () => import("@/views/crm/index"),
         name: "crmDetails",
         hidden: true,
         meta: { title: "Hotel Details", icon: "local_activity" }

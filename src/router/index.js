@@ -36,6 +36,13 @@ export const constantRouterMap = [
           icon: "mdi-view-dashboard",
           title: "dashboard"
         }
+      },
+      {
+        path: "/crm/:tab",
+        component: () => import("@/views/crm/index"),
+        name: "crmDetails",
+        hidden: true,
+        meta: { title: "Hotel Details", icon: "local_activity" }
       }
     ]
   },

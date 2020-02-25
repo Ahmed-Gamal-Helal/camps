@@ -27,12 +27,14 @@ export default {
     };
   },
   created() {
-    // const tabParam = this.items[this.tab];
-    // this.$router.push(`/crm/?tab=${tabParam}`);
+    const tabParam = this.components[this.tab];
+    this.$router.push(`/crm/${tabParam}`);
   },
   methods: {
     changeTab() {
-      console.log(this.items[this.tab]);
+      const tabParam = this.components[this.tab];
+      console.log(tabParam);
+      this.$router.push(`/crm/${tabParam}`);
       // tab = tab.toLowerCase().replace(" ", "-");
       // this.$router.replace({
       //   name: "crmDetails",
@@ -44,13 +46,11 @@ export default {
   },
   watch: {
     $route: {
-      handler(route) {
-        console.log(route);
-        console.log(this.items[this.tab]);
-
-        // let tab = route.params.tab;
-        // let index = this.components.indexOf(tab);
-        // this.tab = index;
+      handler({ params }) {
+        if (params.tab) {
+          let index = this.components.indexOf(params.tab);
+          this.tab = index;
+        }
       },
       immediate: true
     }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-container class="fill-height h-80" fluid>
-      <v-row align="center" justify="center">
+      <v-row>
         <!-- <v-col sm="4" lg="3" class="mx-auto">
           <v-img :src="require('@/assets/imgs/no_data/call.svg')"></v-img>
         </v-col>
@@ -10,16 +10,38 @@
             Sarech by Phone Number , Account ID , Eamil
           </h2>
         </v-col> -->
-        <v-col sm="12" class="mx-auto">
+        <v-col sm="9" class="mx-auto">
           <v-text-field
             outlined
             rounded
-            v-model="mobile"
+            v-model="search"
             placeholder="01275017516"
             prepend-inner-icon="mdi-magnify"
             append-icon="mdi-arrow-right"
             @click:append="toggleMarker"
           ></v-text-field>
+        </v-col>
+        <v-col sm="3" v-if="callToggle">
+          <v-btn
+            width="100%"
+            class="button mx-1 h-54"
+            @click="buttonsToggle"
+            large
+            color="success"
+          >
+            <span class="mx-2">Call Now</span>
+          </v-btn>
+        </v-col>
+        <v-col sm="3" v-else>
+          <v-btn
+            width="100%"
+            class="button mx-1 h-54"
+            @click="endCall"
+            large
+            color="error"
+          >
+            <span class="mx-2">End Call</span>
+          </v-btn>
         </v-col>
       </v-row>
       <v-row>
@@ -37,6 +59,11 @@
           <interactions :interactions="interactions" />
         </v-col>
       </v-row>
+
+      <!-- Dialog -->
+      <v-dialog v-model="taskDialog" max-width="75%">
+        <task-modal />
+      </v-dialog>
     </v-container>
   </div>
 </template>
@@ -49,16 +76,19 @@ export default {
     FamilyInfo: () => import("./sub/FamilyInfo"),
     BookedCamps: () => import("./sub/BookedCamps"),
     Tasks: () => import("./sub/Tasks"),
-    Interactions: () => import("./sub/Interactions")
+    Interactions: () => import("./sub/Interactions"),
+    TaskModal: () => import("./sub/TaskModal")
   },
   data() {
     return {
-      mobile: null,
+      search: null,
       parentInfo: [],
       childrenInfo: [],
       bookedCamps: [],
       tasks: [],
-      interactions: []
+      interactions: [],
+      callToggle: true,
+      taskDialog: false
     };
   },
   methods: {
@@ -67,7 +97,7 @@ export default {
       this.$router.push({ query });
       IndexData({
         reqName: `/crm/customers?a`,
-        query: { mobile: this.mobile }
+        query: { search: this.search }
       })
         .then(res => {
           const { customer } = res.data;
@@ -79,13 +109,19 @@ export default {
           this.interactions = customer.related_interactions;
         })
         .catch(() => {});
+    },
+    buttonsToggle() {
+      this.callToggle = false;
+    },
+    endCall() {
+      this.taskDialog = true;
     }
   },
   computed: {
     query() {
       const query = {};
-      if (this.mobile) {
-        query.mobile = this.mobile;
+      if (this.search) {
+        query.search = this.search;
       }
       return query;
     }
@@ -94,7 +130,7 @@ export default {
     $route: {
       immediate: true,
       handler({ query }) {
-        this.mobile = query.mobile;
+        this.search = query.search;
       }
     }
   }

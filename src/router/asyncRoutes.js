@@ -49,6 +49,13 @@ export const asyncRouterMap = [
           title: "crm",
           icon: "mdi-account-circle"
         }
+      },
+      {
+        path: "/crm/:tab",
+        component: () => import("@/views/crm/detailed-components"),
+        name: "crmDetails",
+        hidden: true,
+        meta: { title: "Hotel Details", icon: "local_activity" }
       }
     ]
   },
